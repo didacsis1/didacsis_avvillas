@@ -1,0 +1,2625 @@
+<!DOCTYPE html>
+
+<html id="html_completo" width="auto" style="overflow:hidden" >
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1260, initial-scale=0, maximum-scale=0"/>
+<title>index</title>
+<link rel="stylesheet" href="index.css">
+<link rel="stylesheet" href="cjs/jquery.mCustomScrollbar.css" />
+<link href="fonts/font-awesome/css/all.css" rel="stylesheet">
+<script src="cjs/easeljs-0.8.2.min.js"></script> 
+<script src="cjs/tweenjs-0.6.2.min.js"></script> 
+<script src="cjs/preloadjs-0.6.2.min.js"></script> 
+<script src="cjs/soundjs-0.6.2.min.js"></script> 
+<script src="index.js"></script> 
+<script type="text/javascript" src="cjs/mapper.js"></script> 
+<script src="cjs/jquery.min.js"></script> 
+<script src="cjs/jquery.1.5.2.js"></script> 
+<script src="cjs/jquery.imagemapster.js"></script> 
+<script src="cjs/jquery.mCustomScrollbar.concat.min.js"></script> 
+<script>
+
+
+
+$.getJSON("images/index_atlas_.json", function(json) {
+
+    frames_principal = json.frames;
+
+});	
+
+
+
+titulos_modulos = []
+
+
+
+titulos_pantallas = [
+
+	"Bienvenida",
+	"Control del Banco",
+	"Accionistas del Banco",
+	"Gobierno del Banco",
+	"Actividad de aprendizaje",
+	"Mecanismos de control",
+	"Revelación de información",
+	"Grupos de interés",
+	"Autorregulación del gobierno corporativo",
+	"Actividad de aprendizaje"
+
+]
+
+
+
+
+
+/*Simulador - Juego*/
+
+
+
+var id_juego = 1;
+
+var ruta_manager="https://www.didacsis.com/games/bancoldex/coberturas_cambiarias/admin/includes/control_sql.php"
+
+
+
+////////
+
+
+
+con_restriccion = true;
+
+
+
+videos_youtube = false;
+
+videos_vimeo = false;
+
+con_globotxt = false;
+
+con_videoini = false;
+
+trato_usted = true; 
+
+
+
+znPages = titulos_pantallas.length;
+
+znThisPage = 1;
+
+pagina_superior = 1;
+
+
+
+
+
+
+
+cantidad_intentos_act = 0;
+
+
+
+cantidad_intentos_ev = 0;
+
+cantidad_intentos_evact = 0;
+
+
+
+es_evaluacion = false;
+
+
+
+version_personaje = [1,1,1,1,1,1,1,1,1,1,1,1,1,1];
+
+con_instruccion_inicial = false;
+
+
+
+con_instrucciones_nav = false;
+
+
+
+audios_totales = [];
+
+//audios_totales[0] = [0,0,0,0,0,0,0,0,0];
+
+audios_totales[0] = [0];
+audios_totales[1] = [0];
+audios_totales[2] = [0];
+audios_totales[3] = [0];
+audios_totales[4] = [0];
+audios_totales[5] = [0,0,0,0,0];
+audios_totales[6] = [0];
+audios_totales[7] = [0];
+audios_totales[8] = [0,0];
+audios_totales[9] = [0];
+audios_totales[10] = [0];
+audios_totales[11] = [0];
+
+
+
+
+//[0,pausas_audio1,pausas_audio2,0,pausas_audio4];
+
+//console.log(audios_totales)
+
+nuevo_puntaje = 0;
+
+nuevo_puntaje_arrastre = 0;
+
+nuevo_puntaje_vf = 0;
+
+puntaje = 0;
+
+//puntaje_aprueba = 70;
+
+
+
+puntaje_aprueba = 80;
+
+puntaje_medio = 60;
+
+puntaje_maximo = 100;
+
+
+
+en_carga = true;
+
+
+
+alto_barra_azul = 0;
+
+
+
+margen_x_canvas_principal = 10;
+
+margen_y_canvas_principal = 30;
+
+
+
+ancho_canvas_principal = 1260;
+
+alto_canvas_principal = 600;
+
+
+
+razon_anchos = ancho_canvas_principal / (ancho_canvas_principal+margen_x_canvas_principal);
+
+razon_altos = alto_canvas_principal / (alto_canvas_principal+margen_y_canvas_principal);
+
+
+
+razon_alto_ancho_margen = (alto_canvas_principal+margen_y_canvas_principal)/(ancho_canvas_principal+margen_x_canvas_principal);
+
+razon_alto_ancho = alto_canvas_principal/ancho_canvas_principal;
+
+var_puntos = "";
+
+
+
+unavez_dispositivo_alto = true;
+
+unavez_dispositivo_ancho = true;
+
+
+
+
+
+
+
+control_puntos = true;
+
+
+
+
+
+
+
+//x_inicial_atras = 359;
+
+leida_funcion_principal = false;
+
+
+
+var canvas_principal, stage_principal, exportRoot;
+
+	
+
+	
+
+
+
+	activar_fondo = false;
+
+	activar_ajuste = true;
+
+	activar_pm = false;
+
+	pagina_mayor = 1;
+
+	dispositivo_movil = false;
+
+	activar_loader = true;
+
+	un_ajuste = false;
+
+	//var bitmap = new createjs.Bitmap("images/loader.png");
+
+	//bounds_bitmap = bitmap.getBounds();
+
+
+
+	ancho_1 = window.innerWidth;
+
+	alto_1 = window.innerHeight;
+
+	almacenaVariable();
+
+	//alto_actual = alto_1;	
+
+	//ancho_actual = ancho_1;
+
+	function mobileAndTabletcheck(){
+
+	if( navigator.userAgent.match(/Android/i)
+
+ 	|| navigator.userAgent.match(/webOS/i)
+
+ 	|| navigator.userAgent.match(/iPhone/i)
+
+	|| navigator.userAgent.match(/iPad/i)
+
+ 	|| navigator.userAgent.match(/iPod/i)
+
+ 	|| navigator.userAgent.match(/BlackBerry/i)
+
+ 	|| navigator.userAgent.match(/Windows Phone/i)
+
+ 	){
+
+	dispositivo_movil = true;
+
+	}
+
+	}
+
+
+
+
+
+	mobileAndTabletcheck();
+
+	ax = 0
+
+	//createjs.Ticker.addEventListener("tick", ajustePantalla);
+
+	window.addEventListener("resize", ajuste2, false);
+
+
+
+
+
+	function ajustePantalla() {
+
+
+
+		//if (activado1) {
+
+			//activado1 = false;
+
+			//activado2 = true;
+
+		ancho_1 = window.innerWidth;
+
+		alto_1 = window.innerHeight;
+
+		//}
+
+
+
+		//if (activado2) {
+
+			//activado1 = true;
+
+			//activado2 = false;
+
+			
+
+		//}
+
+
+
+		if(un_ajuste){
+
+			//ancho_1 = window.innerHeight;
+
+			//alto_1 = window.innerWidth;
+
+			//activar_ajuste = true;
+
+
+
+		}
+
+
+
+		if(dispositivo_movil){
+
+			if(ancho_1<alto_1){
+
+			activar_ajuste = true;
+
+			//un_ajuste = false;
+
+			//ajuste2();
+
+			//almacenaVariable();	
+
+			document.getElementById("orientacion").style.visibility = "visible"; 
+
+			
+
+
+
+			} else {
+
+			//ajuste2();
+
+			//almacenaVariable();	
+
+			//activar_ajuste = false;
+
+			document.getElementById("orientacion").style.visibility = "hidden"; 
+
+			setTimeout(function () {
+
+				activar_ajuste = false;
+
+			}, 4500);
+
+
+
+			}
+
+
+
+		} else {
+
+			document.getElementById("orientacion").style.visibility = "hidden"; 
+
+
+
+			if (ancho_1 != ancho_2 || alto_1 != alto_2){
+
+			//ajuste2();
+
+			//almacenaVariable();
+
+			}
+
+
+
+		}
+
+		
+
+		
+
+		
+
+
+
+
+
+	}
+
+	
+
+	function almacenaVariable(){
+
+		alto_2 = alto_1;	
+
+		ancho_2 = ancho_1;
+
+	}
+
+	/*
+
+	setInterval(function () {
+
+				ancho_2 = window.innerWidth;
+
+				alto_2 = window.innerHeight;
+
+	}, 500);
+
+	*/
+
+	/*
+
+	tiempo_revision = 100
+
+	setInterval(function () {
+
+		ancho_1 = window.innerWidth;
+
+		alto_1 = window.innerHeight;
+
+
+
+		setTimeout(function () {
+
+		ancho_2 = window.innerWidth;
+
+		alto_2 = window.innerHeight;
+
+
+
+			if (ancho_1 != ancho_2 || alto_1 != alto_2){
+
+				ajuste();
+
+			}
+
+
+
+		}, tiempo_revision/2);
+
+
+
+			
+
+	}, tiempo_revision);
+
+	*/
+
+	
+
+
+
+	
+
+
+
+	
+
+	//znThisPage = 1;
+
+
+
+	
+
+	function tiempoPuntos(){
+
+	control_puntos = false;
+
+	
+
+			//bitmap.rotation += 15;
+
+			
+
+
+
+			//var_puntos = var_puntos+"." ;
+
+			numero_puntos = var_puntos.split("").length;
+
+			
+
+			if (numero_puntos<3){
+
+				var_puntos = var_puntos+"." ;
+
+			} else {
+
+				var_puntos = ""; 
+
+			}
+
+	setTimeout(function(){
+
+		tiempoPuntos();			
+
+		}, 600);
+
+	}
+
+	
+
+	/*
+
+	setInterval(function () {
+
+		
+
+		if (en_carga){
+
+			ajuste();
+
+		}
+
+
+
+	}, 300);
+
+	*/
+
+		
+
+	
+
+	/*
+
+	setInterval(function () {
+
+		ancho_1 = window.innerWidth;
+
+		alto_1 = window.innerHeight;
+
+
+
+		ancho_2 = window.innerWidth;
+
+		alto_2 = window.innerHeight;
+
+
+
+			if (ancho_1 != ancho_2 || alto_1 != alto_2){
+
+				ajuste();
+
+			}
+
+
+
+	}, 1000);
+
+	*/
+
+	
+
+
+
+	function ajuste2(){
+
+		ax++
+
+		
+
+
+
+
+
+		ancho_ventana =  window.innerWidth;// || parent.document.body.clientWidth;
+
+		alto_ventana =  window.innerHeight;
+
+		
+
+		//document.getElementById("contenedor_nombre_leccion").innerHTML = dispositivo_movil+"_"+leida_funcion_principal +" "+ ax
+
+
+
+		if(dispositivo_movil&&leida_funcion_principal){
+
+				
+
+			if(alto_ventana>ancho_ventana&&unavez_dispositivo_alto){
+
+				unavez_dispositivo_alto = false;
+
+				unavez_dispositivo_ancho = true;
+
+				permite_ajuste = true;
+
+
+
+			} else if(alto_ventana<=ancho_ventana&&unavez_dispositivo_ancho) {
+
+				unavez_dispositivo_alto = true;
+
+				unavez_dispositivo_ancho = false;
+
+				permite_ajuste = true;
+
+
+
+			}
+
+		} else {
+
+				permite_ajuste = true;
+
+
+
+		}
+
+
+
+		if(permite_ajuste){
+
+			ajustePantalla();
+
+				permite_ajuste = false;
+
+
+
+		razon_alto_ancho_ventana = alto_ventana/ancho_ventana;
+
+		
+
+		//razon_ventana = ancho_ventana/alto_ventana;
+
+		//razon_ventana = alto_ventana/ancho_ventana;
+
+
+
+		
+
+
+
+
+
+	
+
+		//razon_ventana = ((ancho_ventana-margen_x_canvas_principal*razon_anchos)) / alto_ventana;
+
+		razon_ancho_ventana = ancho_ventana/(ancho_canvas_principal+margen_x_canvas_principal);
+
+		
+
+
+
+		razon_alto_ventana = alto_ventana/(alto_canvas_principal+margen_y_canvas_principal);
+
+
+
+		ancho_canvas = ancho_ventana*razon_anchos;
+
+		alto_canvas = alto_ventana*razon_altos;
+
+
+
+		if(razon_alto_ancho_ventana<razon_alto_ancho_margen){
+
+			
+
+			razon_venta = razon_alto_ventana;
+
+			
+
+			y_princial = (alto_ventana-alto_canvas)/razon_alto_ventana/2;
+
+			
+
+			x_principal = ancho_ventana/razon_alto_ventana/2-ancho_canvas/razon_ancho_ventana/2;
+
+			//x_principal = ancho_canvas;
+
+			if(dispositivo_movil){
+
+			//document.getElementById("orientacion").style.visibility = "hidden"; 
+
+			
+
+			}
+
+		} else {
+
+		
+
+
+
+			razon_venta = razon_ancho_ventana;
+
+			y_princial = (alto_ventana/razon_ancho_ventana)/2-alto_canvas/razon_alto_ventana/2;
+
+			x_principal = ((ancho_ventana-ancho_canvas)/razon_ancho_ventana)/2;
+
+
+
+		if(dispositivo_movil){
+
+			//document.getElementById("orientacion").style.visibility = "visible"; 
+
+
+
+		}
+
+		}
+
+
+
+		
+
+		//margin_left_nuevo = ancho_ventana-(ancho_canvas_principal/razon_ventana);
+
+		
+
+		//if(ancho_ventana>(ancho_canvas_principal+margen_x_canvas_principal)*razon_anchos){
+
+		//document.getElementById("html_completo").style.transform = "scale("+razon_venta+")";
+
+		
+
+		//document.getElementById("html_completo").style.width = Math.ceil(ancho_ventana/razon_venta)+"px";
+
+		//document.getElementById("html_completo").style.height = Math.ceil(alto_ventana/razon_venta)+"px";
+
+				//document.getElementById("html_completo").style.width = ancho_ventana+"px";
+
+		//document.getElementById("html_completo").style.height = alto_ventana+"px";
+
+		//console.log(razon_venta)
+
+		//razon_venta = razon_venta.toFixed(1);
+
+		razon_venta = Math.floor(razon_venta * 10) / 10
+
+		
+
+		document.getElementById("body_completo").style.transform = "scale("+razon_venta+")";
+
+
+
+
+
+		//console.log(razon_venta)
+
+
+
+		ancho_contenedor = document.getElementById("body_completo").clientWidth*razon_venta;
+
+		ancho_html = document.getElementById("html_completo").clientWidth
+
+
+
+		document.getElementById("body_completo").style.marginLeft = (ancho_html-ancho_contenedor)/2+"px";
+
+		
+
+		alto_contenedor = document.getElementById("body_completo").clientHeight*razon_venta;
+
+		alto_html = document.getElementById("html_completo").clientHeight
+
+
+
+		document.getElementById("body_completo").style.marginTop = (alto_html-alto_contenedor)/2+"px";
+
+
+
+
+
+		//console.log(ancho_contenedor,ancho_html)
+
+
+
+		//} else{
+
+		
+
+		//canvas_principal.style.width = ancho_canvas+"px"
+
+		
+
+		//stage_principal.x = x_principal;
+
+		//canvas_principal.style.marginLeft = x_principal+"px"
+
+
+
+		//stage_principal.y = (alto_ventana/razon_ancho_ventana)/2-(alto_canvas/razon_alto_ventana);
+
+		//stage_principal.y = alto_canvas/razon_alto_ventana;
+
+		
+
+		//stage_principal.y = y_princial;
+
+		//canvas_principal.style.marginTop = y_princial+"px"
+
+		if(leida_funcion_principal){
+
+						lugarFlechas();
+
+						
+
+					}  
+
+		//if(leido_personaje){
+
+						
+
+						//lugarPersonaje();
+
+
+
+		//			}
+
+		
+
+		//canvas_principal.style.marginTop = stage_principal.y+"px"
+
+		
+
+		//canvas_principal.style.height = alto_canvas+"px"
+
+		//canvas_principal.style.marginTop = (alto_ventana-alto_canvas)/2+"px"
+
+		//}
+
+		
+
+		
+
+		//canvas_principal.style.marginLeft = margin_left_nuevo+"px"
+
+		//canvas_principal.style.marginLeft = ancho_ventana+"px"
+
+				//stage_principal.x = ((alto_ventana - nuevo_alto)/2)/razon_ventana/2;
+
+
+
+}
+
+	}
+
+
+
+
+
+function ajuste() {
+
+
+
+		
+
+
+
+		///LOADER
+
+
+
+		if(activar_loader){
+
+
+
+			/*
+
+			setTimeout(function(){
+
+	
+
+			//bitmap.rotation += 15;
+
+			
+
+
+
+			//var_puntos = var_puntos+"." ;
+
+			numero_puntos = var_puntos.split("").length;
+
+			
+
+			console.log(var_puntos,numero_puntos)
+
+
+
+
+
+				if (numero_puntos<3){
+
+					var_puntos = var_puntos+"." ;
+
+				} else {
+
+					var_puntos = ""; 
+
+				}
+
+				
+
+
+
+			}, 1000);
+
+
+
+			*/
+
+		}
+
+
+
+		////
+
+		if (activar_pm) {
+
+
+
+
+
+		if (pagina_mayor > znThisPage) {
+
+				//document.getElementById("flecha_abajo").style.visibility = "visible"; 
+
+			} else {
+
+				pagina_mayor = znThisPage;
+
+			}
+
+		}
+
+		///
+
+
+
+		ancho_ventana =  window.innerWidth;// || parent.document.body.clientWidth;
+
+		alto_ventana =  window.innerHeight;
+
+
+
+		razon_alto_ancho = alto_canvas_principal/ancho_canvas_principal;
+
+
+
+		alto_canvas = ancho_ventana * razon_alto_ancho;
+
+		alto_canvas = ancho_ventana * razon_alto_ancho;
+
+
+
+		razon_ventana = ((ancho_ventana-margen_x_canvas_principal)*(razon_alto_ancho)) / alto_canvas_principal;
+
+	//	razon_ventana = ancho_ventana / ancho_canvas_principal;
+
+
+
+		//document.getElementById("html_completo").style.backgroundSize  = cover;//ancho_ventana+"px " + alto_ventana+"px"; 
+
+
+
+		ancho_pantalla = screen.width;
+
+		alto_pantalla = screen.height;
+
+
+
+		//document.getElementById("html_completo");
+
+		
+
+
+
+		//console.log(ancho_ventana, ancho_pantalla,razon_ventana)
+
+		//razon_ventana_d = razon_ventana.toFixed(2)
+
+		if (activar_ajuste){ //&& dispositivo_movil == false
+
+
+
+			
+
+			
+
+		
+
+			
+
+
+
+			
+
+
+
+			if (activar_fondo){
+
+					valor = margen_y_canvas_principal///1.3///(razon_ventana*2);
+
+					nuevo_ancho = (alto_ventana-valor)/razon_alto_ancho;
+
+					
+
+					razon_ventana_2 = nuevo_ancho / ancho_canvas_principal;
+
+					
+
+					//diferencia_anchos = ancho_ventana - nuevo_ancho;
+
+
+
+					diferencia_anchos = (ancho_ventana - nuevo_ancho)/razon_ventana_2;
+
+					
+
+
+
+
+
+					valorb = margen_x_canvas_principal;
+
+					nuevo_alto = nuevo_ancho*razon_alto_ancho;//(ancho_ventana-valorb)*razon_alto_ancho;
+
+					
+
+					razon_ventana_c = nuevo_alto / alto_canvas_principal;
+
+					
+
+					//diferencia_anchos = ancho_ventana - nuevo_ancho;
+
+
+
+					diferencia_altos = (alto_ventana - nuevo_alto)/razon_ventana_c;
+
+				if (alto_canvas+margen_y_canvas_principal<alto_ventana || un_ajuste){
+
+
+
+				//if (alto_canvas+margen_y_canvas_principal<alto_ventana){
+
+
+
+
+
+				document.getElementById("html_completo").style.width = Math.ceil(ancho_ventana/razon_ventana)+"px";
+
+				document.getElementById("html_completo").style.height = Math.ceil(alto_ventana/razon_ventana)+"px";
+
+
+
+				document.getElementById("imagen_fp").style.width = Math.ceil(ancho_ventana/razon_ventana)+"px";
+
+				document.getElementById("imagen_fp").style.height = Math.ceil(alto_ventana/razon_ventana)+"px";
+
+				
+
+
+
+				//document.getElementById("html_completo").style.backgroundSize  = "100% 100%";
+
+		
+
+
+
+					//diferencia_anchos = ancho_ventana - nuevo_ancho;
+
+
+
+				document.getElementById("html_completo").style.transform = "scale("+razon_ventana+")";
+
+				document.getElementById("html_completo").style.webkitTransform = "scale("+razon_ventana+")"; // Chrome
+
+				document.getElementById("html_completo").style.MozTransform = "scale("+razon_ventana+")"; //Mozilla
+
+
+
+				alto_barra_azul = (alto_ventana-alto_canvas)*(1/razon_ventana);
+
+				
+
+
+
+				//document.getElementById("barra_inferior").style.height = alto_barra_azul+"px";
+
+
+
+				//console.log(margen_x_canvas_principal)
+
+				if(dispositivo_movil){
+
+					canvas_principal.style.marginLeft = 5+"px"
+
+				stage_principal.x = 5;
+
+				} else {
+
+				canvas_principal.style.marginLeft = (alto_ventana - nuevo_alto)/razon_ventana/2+"px"
+
+				stage_principal.x = (alto_ventana - nuevo_alto)/razon_ventana/2;
+
+				}
+
+				if (alto_barra_azul<margen_y_canvas_principal){
+
+						//alto_barra_azul = margen_y_canvas_principal;
+
+					}
+
+
+
+
+
+
+
+				
+
+				if(dispositivo_movil){
+
+						canvas_principal.style.marginTop = 5+"px"
+
+				stage_principal.y = 5;
+
+
+
+					} else {
+
+						canvas_principal.style.marginTop = alto_barra_azul/2+"px"
+
+				stage_principal.y = alto_barra_azul/2;
+
+					}
+
+
+
+				
+
+				if(leida_funcion_principal){
+
+						lugarFlechas();
+
+
+
+					}
+
+
+
+				//stage_principal.update();
+
+				if(un_ajuste){
+
+
+
+					//setTimeout(function () {
+
+						un_ajuste=false;
+
+						activar_ajuste=true;
+
+						ajuste();
+
+					//}, 1000);
+
+					
+
+				}
+
+				
+
+
+
+				} else {
+
+
+
+					
+
+					alto_barra_azul = 0;
+
+					//document.getElementById("barra_inferior").style.height = 0+"px";
+
+					/*
+
+					valor = margen_y_canvas_principal///1.3///(razon_ventana*2);
+
+					nuevo_ancho = (alto_ventana-valor)/razon_alto_ancho;
+
+					
+
+					razon_ventana_2 = nuevo_ancho / ancho_canvas_principal;
+
+					
+
+					//diferencia_anchos = ancho_ventana - nuevo_ancho;
+
+
+
+					diferencia_anchos = (ancho_ventana - nuevo_ancho)/razon_ventana_2;
+
+					
+
+
+
+
+
+					valorb = margen_x_canvas_principal;
+
+					nuevo_alto = nuevo_ancho*razon_alto_ancho;//(ancho_ventana-valorb)/(ancho_canvas_principal/alto_canvas_principal);
+
+					
+
+					razon_ventana_c = nuevo_alto / alto_canvas_principal;
+
+					
+
+					//diferencia_anchos = ancho_ventana - nuevo_ancho;
+
+
+
+					diferencia_altos = (alto_ventana - nuevo_alto)/razon_ventana_c;
+
+
+
+					//diferencia_altos = margen_y_canvas_principal;
+
+					*/
+
+					document.getElementById("html_completo").style.width = Math.ceil(ancho_ventana/razon_ventana_2)+"px";
+
+					document.getElementById("html_completo").style.height = Math.ceil(alto_ventana/razon_ventana_2)+"px";
+
+
+
+					document.getElementById("imagen_fp").style.width = Math.ceil(ancho_ventana/razon_ventana_2)+"px";
+
+					document.getElementById("imagen_fp").style.height = Math.ceil(alto_ventana/razon_ventana_2)+"px";
+
+				
+
+					//document.getElementById("html_completo").style.backgroundSize  = "100% 100%";
+
+		
+
+					//console.log(razon_ventana) 
+
+					document.getElementById("html_completo").style.transform = "scale("+razon_ventana_2+")";
+
+					document.getElementById("html_completo").style.webkitTransform = "scale("+razon_ventana_2+")"; // Chrome
+
+					document.getElementById("html_completo").style.MozTransform = "scale("+razon_ventana_2+")"; //Mozilla
+
+					//document.getElementById("canvas_principal").style.position = "relative"
+
+					//document.getElementById("canvas_principal").style.width = diferencia_anchos+"px;"
+
+					//canvas_principal.style.marginLeft = diferencia_anchos/2+"px"
+
+					//document.getElementById("canvas_principal").style.height = diferencia_anchos+"px;"
+
+					alto_barra_azul = (alto_ventana-alto_canvas)*(1/razon_ventana);
+
+					if (alto_barra_azul<margen_y_canvas_principal){
+
+						alto_barra_azul = margen_y_canvas_principal;
+
+					}
+
+
+
+					/*
+
+					if (diferencia_anchos<margen_x_canvas_principal){
+
+						diferencia_anchos = margen_x_canvas_principal;
+
+					}
+
+					*/
+
+
+
+
+
+					stage_principal.x = diferencia_anchos/2 //- margen_x_canvas_principal;
+
+					canvas_principal.style.marginLeft = diferencia_anchos/2 + "px"//- margen_x_canvas_principal +"px";
+
+
+
+					canvas_principal.style.marginTop = diferencia_altos/2+"px"
+
+					stage_principal.y = diferencia_altos/2;
+
+
+
+
+
+					if(leida_funcion_principal){
+
+						lugarFlechas();
+
+						
+
+					}
+
+					
+
+					//stage_principal.update();
+
+
+
+
+
+				}
+
+			}
+
+
+
+			//document.getElementById("html_completo").style.backgroundImage = "url('images/fondo_general.png')";
+
+		
+
+		} else {
+
+		//document.getElementById("html_completo").style.backgroundImage = "none";
+
+		//document.getElementById("fondo").style.visibility = "hidden"; 
+
+		//document.getElementById("nombre_curso").style.fontSize = 14+"px"; 
+
+		//document.getElementById("art").style.fontSize = 11+"px"; 
+
+
+
+		}
+
+		//parent.document.getElementById("html_completo").style.MsTransform = "scale("+razon_ventana+")"; 
+
+		//parent.document.getElementById("html_completo").style.zoom = razon_ventana;
+
+		
+
+	}
+
+
+
+
+
+function init() {
+
+	$(".modulo_cerrado").fadeOut(0);
+
+
+
+	//opener.ventanaCargada();
+
+	canvas_principal = document.getElementById("canvas_principal");
+
+	images = images||{};
+
+	ss = ss||{};
+
+
+
+	var loader = new createjs.LoadQueue(false);
+
+	loader.installPlugin(createjs.Sound);
+
+	loader.addEventListener("fileload", handleFileLoad);
+
+	loader.addEventListener("complete", handleComplete);
+
+	loader.addEventListener("progress", handleProgress);
+
+	loader.loadManifest(lib.properties.manifest);
+
+	loader.loadFile({src:"images/index_atlas_.json", type:"spritesheet", id:"index_atlas_"}, true);
+
+	iniciarScorm();
+
+
+
+	
+
+		document.getElementById("total_pag").innerHTML = znPages;
+
+		document.getElementById("actual_pag").innerHTML = znThisPage;
+
+
+
+	/*
+
+	for (i = 0; i < audios_totales.length; i++) {
+
+		for (int = 0; int < audios_totales[i].length; int++) {
+
+			//console.log(sig,audios_totales[sig-1]) 
+
+			if(audios_totales[i][int]!=0){
+
+				loader.loadFile({src:"pages/page"+i+"/sounds/audio"+i+"_"+int+".mp3"});
+
+				console.log("pages/page"+i+"/sounds/audio"+i+"_"+int+".mp3")
+
+			}	
+
+		}
+
+	}
+
+	*/
+
+
+
+
+
+	
+
+}
+
+
+
+
+
+function handleFileLoad(evt) {
+
+	if (evt.item.type == "image") { images[evt.item.id] = evt.result; }
+
+
+
+}
+
+
+
+
+
+function playSound(id, loop) {
+
+	createjs.Sound.play(id, createjs.Sound.INTERRUPT_EARLY, 0, 0, loop);
+
+}
+
+
+
+
+
+var ancho_linea = 0;
+
+var alto_linea = 35;
+
+var max_ancho = 200;
+
+ajuste_una_vez = true;
+
+function handleProgress(evt) {
+
+
+
+	
+
+	activar_loader = true;
+
+	
+
+
+
+	//console.log("HOLa")
+
+	
+
+	stage_principal = new createjs.Stage(canvas_principal);
+
+	//if (ajuste_una_vez){
+
+		
+
+		//ajuste_una_vez = false;
+
+	//}
+
+
+
+	//console.log(bounds_bitmap)
+
+	//console.log(bounds_bitmap.width)
+
+	//bitmap.regX = 168/2;
+
+	//bitmap.regY = 168/2;
+
+	//bitmap.alpha = .5;
+
+	//bitmap.x = ancho_canvas_principal/2;
+
+	//bitmap.y = alto_canvas_principal/2;
+
+	
+
+	//bitmap.rotation = progreso;	
+
+	max_ancho = 720;
+
+	//progreso = Math.round(evt.loaded * max_ancho);
+
+	progreso = (evt.loaded)
+
+	progreso = progreso.toFixed(2);
+
+	 
+
+
+
+	/*
+
+	var_logo_client_principal = document.getElementById("logo_client0");
+
+	logo_client_principal = new createjs.DOMElement(var_logo_client_principal);
+
+	logo_client_principal.x = 3;
+
+	logo_client_principal.y = 0;
+
+	logo_client_principal.scaleX = Number(progreso);	
+
+	*/
+
+	
+
+
+
+	texto_carga = new createjs.Text("Cargando...", "40px Raleway-Regular", "#666666");
+
+	bounds_texto_carga = texto_carga.getBounds();
+
+
+
+	ancho_ventana =  window.innerWidth;// || parent.document.body.clientWidth;
+
+	alto_ventana =  window.innerHeight;
+
+
+
+	texto_carga.x = 400 + stage_principal.x;
+
+	texto_carga.y = 200 - stage_principal.y;
+
+
+
+	
+
+	
+
+	/*
+
+	setTimeout(function(){
+
+	
+
+	bitmap.rotation += 4;	
+
+				
+
+
+
+	}, 40);
+
+	*/
+
+	
+
+	
+
+	
+
+
+
+	//stage_principal.addChild(texto_carga);
+
+	//if (ajuste_una_vez){
+
+		stage_principal.update();
+
+		
+
+	//}
+
+	if (control_puntos){
+
+		
+
+		//logo_client0.visible = true;
+
+		tiempoPuntos();
+
+	}
+
+	
+
+
+
+
+
+	//ajuste();
+
+
+
+	if (ajuste_una_vez){
+
+	ajuste2();
+
+		ajuste_una_vez = false;
+
+		
+
+	}
+
+	//ajuste();
+
+
+
+			
+
+	
+
+
+
+
+
+			
+
+	
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+function handleComplete(evt) {
+
+	var queue = evt.target;
+
+	ss["index_atlas_"] = queue.getResult("index_atlas_");
+
+	exportRoot = new lib.index();
+
+
+
+
+
+	
+
+
+
+	stage_principal = new createjs.Stage(canvas_principal);
+
+	stage_principal.addChild(exportRoot);
+
+	stage_principal.update();
+
+
+
+	createjs.Ticker.setFPS(lib.properties.fps);
+
+	createjs.Ticker.addEventListener("tick", stage_principal);
+
+
+
+	activar_loader = false;
+
+
+
+	interface_principal();
+
+
+
+	ajuste2();
+
+
+
+	en_carga = false;
+
+
+
+
+
+	//imagen_logo = document.getElementById("imagen_logo");
+
+	//imagen_logo.src = "";
+
+	//imagen_logo.src = "images/intro.gif"+"?a="+Math.random();
+
+	
+
+	
+
+	/*
+
+	setTimeout(function(){
+
+		imagen_logo2 = document.getElementById("imagen_logo2");
+
+		imagen_logo2.src = "";
+
+		imagen_logo2.src = "images/logoIntroT.gif"+"?a="+Math.random();
+
+
+
+		}, 800);
+
+	*/
+
+
+
+	top_scrollMenu = 0;
+
+	left_scrollMenu = 0;
+
+
+
+	$(".menunav").mCustomScrollbar({
+
+   	  
+
+   	  	theme:"inset-3-dark",
+
+		scrollButtons:{
+
+			enable:true
+
+		},
+
+		setWidth: true
+
+
+
+	});
+
+	
+
+	$(".menunav_n").mCustomScrollbar({
+
+   	  
+
+   	  	theme:"light-thin",
+
+		scrollButtons:{
+
+			enable:true
+
+		},
+
+		callbacks:{
+
+	        whileScrolling:function(){
+
+	            myCustomFn(this);
+
+	        }
+
+    	},
+
+		setWidth: true
+
+
+
+	});
+
+
+
+	$(".menunav_nhz").mCustomScrollbar({
+
+		axis:"x",
+
+   	  	
+
+   	  	theme:"minimal",
+
+		scrollButtons:{
+
+			enable:true
+
+		},
+
+		callbacks:{
+
+	        whileScrolling:function(){
+
+	            myCustomFnHz(this);
+
+	        }
+
+    	},
+
+		setWidth: true
+
+
+
+	});
+
+
+
+	
+
+	
+
+	function myCustomFn(el){
+
+    	//top_scrollMenu = el;
+
+    	top_scrollMenu = el.mcs.top;
+
+	//	console.log(top_scrollMenu)
+
+
+
+	}
+
+
+
+	function myCustomFnHz(el){
+
+    	//top_scrollMenu = el;
+
+    	left_scrollMenu = el.mcs.left;
+
+	//	console.log(top_scrollMenu)
+
+
+
+	}
+
+}
+
+
+
+</script> 
+<script src="SCORMlibHTM.js" type="text/javascript" language="JavaScript"> </script> 
+<script type="text/javascript" language="JavaScript"> 
+
+	
+
+	/*
+
+	function guardaAvance() {
+
+		//znThisPage = pagina_superior;
+
+		//alert("terminar(), znThisPage:"+znThisPage);
+
+		status = "";
+
+
+
+		try {			
+
+			status = SCOGetValue("cmi.core.lesson_status");
+
+			SCOSetValue("cmi.core.lesson_location",pagina_superior);
+
+			//SCOSetValue("cmi.suspend_data", pagina_superior);
+
+
+
+			//SCOSetValue("cmi.core.score.raw", 100);
+
+			SCOSetValue("cmi.core.score.raw", puntaje);
+
+			if (completado) {
+
+			
+
+			SCOSetValue("cmi.core.lesson_status","completed");
+
+			//SCOSetValue("cmi.success_status","passed");
+
+						
+
+			//try {
+
+			//}
+
+			//catch (e) {}
+
+
+
+
+
+			} 	else{
+
+			
+
+				SCOSetValue("cmi.core.lesson_status","incomplete");
+
+			
+
+			}
+
+
+
+			if(puntaje>=puntaje_aprueba){
+
+			SCOSetValue("cmi.success_status","passed");
+
+				
+
+			}
+
+
+
+		}
+
+		catch (e) {}	
+
+	}
+
+	*/
+
+
+
+	function guardaAvance() {
+
+		//znThisPage = pagina_superior;
+
+		//alert("terminar(), znThisPage:"+znThisPage);
+
+		status = "";
+
+		
+
+		status = SCOGetValue("cmi.core.lesson_status");
+
+
+
+		try {			
+
+			SCOSetValue("cmi.core.lesson_location",pagina_superior);
+
+		}
+
+		catch (e) {}
+
+
+
+		try {			
+
+			SCOSetValue("cmi.core.score.raw", puntaje);
+
+		}
+
+		catch (e) {}	
+
+		
+
+		try {	
+
+			if (completado) {
+
+			SCOSetValue("cmi.core.lesson_status","completed");
+
+			} else {
+
+				SCOSetValue("cmi.core.lesson_status","incomplete");
+
+			}
+
+		}
+
+		catch (e) {}
+
+			//SCOSetValue("cmi.suspend_data", pagina_superior);
+
+
+
+			//SCOSetValue("cmi.core.score.raw", 100);
+
+			
+
+			
+
+		try {			
+
+			if(puntaje>=puntaje_aprueba){
+
+			SCOSetValue("cmi.success_status","passed");
+
+				
+
+			}
+
+		}
+
+		catch (e) {}
+
+
+
+			
+
+
+
+	}
+
+
+
+
+
+	function terminar() {
+
+		guardaAvance();
+
+		SCOFinish();
+
+		//opener.ventanaCerrada();
+
+
+
+	}
+
+	
+
+	
+
+	function iniciarScorm() {
+
+		var iniLMS = SCOInitialize();
+
+
+
+		//pagina_superior = 5;
+
+
+
+		if (iniLMS=="true") {  //El tipo de datos de SCOInitialize es String
+
+			console.log("conectado")
+
+			//puntaje = SCOGetValue(  "cmi.core.score.raw" );
+
+			znThisPage = parseInt(SCOGetValue(  "cmi.core.lesson_location" ),10);
+
+    		//znThisPage = parseInt(SCOGetValue("cmi.suspend_data"), 10);
+
+
+
+
+
+    		//nom_student = SCOGetValue("cmi.core.student_name");
+
+    		//id_student = SCOGetValue("cmi.core.student_id");
+
+
+
+
+
+			puntaje = parseInt(SCOGetValue(  "cmi.core.score.raw" ),10);
+
+
+
+			if (isNaN(puntaje)||isNaN(znThisPage)){
+
+				puntaje = 0;
+
+			} 
+
+
+
+
+
+			if (!isNaN(znThisPage) && znThisPage>0 && znThisPage<znPages+1) {
+
+				// myStage.location.href = preFijoPage + znThisPage + extPage; 
+
+				//DCRI
+
+				if(con_restriccion){
+
+
+
+				pagina_superior = znThisPage;
+
+				} else {
+
+					pagina_superior = znPages-1;
+
+					if(znPages==znThisPage){
+
+						pagina_superior = znPages;
+
+
+
+					} else {
+
+						pagina_superior = znPages-1;
+
+
+
+					}
+
+				}
+
+			}
+
+			else {
+
+				znThisPage=1; 
+
+				//DCRI
+
+
+
+				if(con_restriccion){
+
+
+
+					pagina_superior = znThisPage;
+
+					pagina_mayor = znThisPage;
+
+				} else {
+
+					pagina_superior = znPages-1;
+
+					pagina_mayor = znPages-1;
+
+				}
+
+			}
+
+			pagina = "pages/page"+znThisPage+"/page"+znThisPage+".html";
+
+			activar_pm = true;	
+
+
+
+					
+
+			status_2 = SCOGetValue("cmi.core.lesson_status");
+
+
+
+			if(status_2 == "completed"){
+
+				completado = true;
+
+			} else {
+
+				completado = false;
+
+
+
+			}
+
+			
+
+		}	else {
+
+			console.log("no-conectado")
+
+			status_2 = "incomplete";
+
+			completado = false;
+
+
+
+
+
+		}
+
+
+
+		//alert("iniLMS(), znThisPage:"+znThisPage+", puntaje:"+", pagina:"+pagina);
+
+		//document.getElementById('pagina_actual').innerHTML = znThisPage;
+
+		
+
+	}
+
+
+
+	
+
+
+
+	
+
+
+
+</script>
+</head>
+
+<body onload="init()" id="body_completo" width="1260" height="600" style="margin: 0; overflow:hidden;background-color:transparent;"
+
+	onunload="terminar()" onbeforeunload="terminar()">
+<div id="orientacion" class="orientacion">
+  <table style="height:100%;width:100%">
+    <td style="vertical-align: middle;width:100%;text-align:center"><div> <img src="images/gif_cel.gif" height="500"> </div>
+        <p> Gira tu celular. </p></td>
+  </table>
+</div>
+<script src="variables.js"></script> 
+<script src="principal.js"></script>
+<div class="div_invisible"> </div>
+<div id="element_per" class="element_per"> </div>
+<div id="logos_hb" class="logos_hb"> 
+  
+  <!--<img src="images/logos_hb.png" height="80">--> 
+  
+</div>
+<div id="logo_client" class="logo_client"> <img src="images/logo_cx.png"> </div>
+<div id="zona_superior" class="zona_superior">
+  <div id="div_contenidos" class="div_contenidos"> 
+    
+    <!--<img src="images/escena_fondo2.jpg">-->
+    
+    <div class="cubre_imgfondo"> </div>
+    <div class="div_contenidosint"> </div>
+  </div>
+  <div id="txt_creditos" class="txt_creditos">CRÉDITOS:</div>
+  <div id="contiene_menunav_n" class="contiene_menunav_n">
+    <div id="txt_menu_n" class="txt_menu_n"> MENÚ </div>
+    <div id="menunav_n" class="menunav_n">
+      <div id="menunavint_n" class="menunavint_n"> </div>
+      <div id="fin_menunav_n" class="fin_menunav_n"> </div>
+    </div>
+  </div>
+  <div id="contiene_menunav_nhz" class="contiene_menunav_nhz">
+    <div id="txt_menu_nhz" class="txt_menu_nhz"> MENÚ </div>
+    <div id="menunav_nhz" class="menunav_nhz">
+      <div id="menunavint_nhz" class="menunavint_nhz"> </div>
+      <div id="fin_menunav_nhz" class="fin_menunav_nhz"> </div>
+    </div>
+  </div>
+  <div id="contiene_menunav" class="contiene_menunav">
+    <div id="cierra_menunav" class="cierra_menunav"> </div>
+    <div style="margin-bottom: 10px;position: relative;"> MENÚ </div>
+    <div id="menunav" class="menunav">
+      <div id="menunavint" class="menunavint"> </div>
+      <div id="fin_menunav" class="fin_menunav"> </div>
+    </div>
+  </div>
+  <div id="boton_cerrar" class="boton_cerrar">
+    <div id="boton_cerrar_b" class="boton_cerrar_b"><!--GUARDAR Y SALIR--></div>
+  </div>
+  <div id="boton_menunav" class="boton_menunav">
+    <div id="boton_menunav_b" class="boton_menunav_b"></div>
+  </div>
+  <div id="fondo_general" class="fondo_general"></div>
+  <div id="mensaje_cierre" class="mensaje_cierre">
+    <div>
+      <div id="preg_salir" style="color:#FFFFFF;font-size: 20px;margin: 10px"> ¿<span class="tx_estasmay">Estás</span> seguro de desear salir del módulo? </div>
+      <div> <span id="cont_salir">Al salir del módulo <span class="tx_tumin">tu</span> avance es guardado, por lo que cuando regrese<span class="tx_fins">s</span> será<span class="tx_fins">s</span> dirigido a la pantalla</span> <span id="pagina_llega"></span> </div>
+    </div>
+    <div>
+      <table style="margin:0 auto;margin-top: 20px">
+        <td><div id="acepta_salir" class="btn_salida"> Salir </div></td>
+          <td style="width: 40px"></td>
+          <td><div id="cancela_salir" class="btn_salida"> No salir </div></td>
+      </table>
+    </div>
+  </div>
+  <div id="mensaje_retrocede" class="mensaje_cierre">
+    <div>
+      <div style="font-size: 22px;margin: 10px;color:#FFF"> ¿<span class="tx_estasmay">Estás</span> seguro de querer volver a la pantalla anterior? </div>
+      <span class="tx_ten">Ten</span> en cuenta que al retroceder y volver a la página actual (<span id="pagina_llega2"></span>), deberá<span class="tx_fins">s</span> iniciar su consulta desde la introducción que hace el personaje. </div>
+    <div>
+      <table style="margin:0 auto;margin-top: 20px">
+        <td><div id="acepta_retrocede" class="btn_salida"> Retroceder </div></td>
+          <td style="width: 40px"></td>
+          <td><div id="cancela_retrocede" class="btn_salida"> No retroceder </div></td>
+      </table>
+    </div>
+  </div>
+  <div id="logo_client0" class="logo_client0"></div>
+  <div id="barra_negra" class="barra_negra"></div>
+  <div id="contenedor_nombre_curso" class="contenedor_nombre_curso">
+    <p><img src="images/flecha_curso.png" style="margin-right:15px"> CURSO: <span>OPERATORIAS EN</span></p>
+    <span class="segunda_linea">NACAR EXPRESS</span></div>
+  <div id="nombre_curso" class="nombre_curso_inicial">La Gestión del Desempeño en el Grupo Éxito</div>
+  <div id="personajes" class="personajes">
+    <div> <img src="images/dcri2.png"> </div>
+    <div style="margin:0 40px;width: 2px;background: #cccccc"> </div>
+    <div> <img src="images/logo_cx.png"> </div>
+  </div>
+  <div id="explorador" class="explorador"> <img id="explorador1"  src="images/explorador1.png" class="explora_invisible" style="display: none"> <img id="explorador2" src="images/explorador2.png"  class="explora_invisible" style="display: none"> </div>
+  <div id="avanza_explora" class="avanza_explora">
+    <table>
+      <td><p> AVANCE: <span> Pantalla <span id="actual_pag"></span> de <span id="total_pag">5</span> </span> </p></td>
+        <td style="width: 10px"></td>
+        <td><img src="images/ruta.png" style="display: none"></td>
+    </table>
+  </div>
+  <div id="div_contenidos_2" class="div_contenidos2"> </div>
+  <div id="personaje_inicial" class="personaje_inicial">
+    <div id="logo_c1"> 
+      
+      <!--<img src="images/personaje_completo.png">--> 
+      
+    </div>
+    <div id="logo_c2" style="visibility: hidden;"> </div>
+  </div>
+  <div id="arrow_anterior" class="flecha_inactiva"> Anterior </div>
+  <div id="arrow_siguiente" class="flecha_inactiva"> Siguiente </div>
+  <div id="btn_ini" class="btn_ini">
+    <div> INICIAR <b></b> </div>
+  </div>
+  <div id="contenedor_nombre_leccion" class="contenedor_nombre_leccion_ini">
+    <div id="nom_curso" class="nom_curso"> CURSO: CÓDIGO DE BUEN GOBIERNO </div>
+    <div id="txt_mod" class="txt_mod"> 
+      
+      <!--| <span>Módulo 1.</span> Periodo de prueba y jornada de trabajo--> 
+      
+    </div>
+  </div>
+  <div id="txt_leccion" class="txt_leccion">
+    <div id="fondod_titlecc" style="position: absolute;top:0;left:0"> </div>
+    <div id="fondod_titlecc2" style="position: absolute;top:0;left:0;visibility: hidden"> </div>
+    <div id="txt_leccion_txt" class="txt_leccion_txt">
+      <div class="modulo_numero"></div>
+    </div>
+  </div>
+  <div id="contenedor_nombre_capitulo" class="contenedor_nombre_capitulo">
+    <video id="video0" preload="auto" style="height:580px;margin-top: 0px;border-radius: 40px">
+      <source src="" type="video/mp4">
+      Su navegador no soporta video HTML5. </video>
+  </div>
+  <div id="contenedor_numero_capitulo" class="contenedor_numero_capitulo">
+    <div class="img_cap"> <i class="fa fa-angle-down" aria-hidden="true"></i> </div>
+    <div id="txt_capitulo" class="txt_capitulo">CAPÍTULO</div>
+    <div id="num_capitulo" class="num_capitulo">2</div>
+  </div>
+  <div id="curso" class="curso"></div>
+  <div id="cont_txt_leccion" class="cont_txt_leccion"></div>
+  <div id="div_txtmenu" class="div_txtmenu">
+    <div style="margin-top: 5px;background: #1D1D1B;padding:5px 0"> MENÚ </div>
+    <div id="div_txtmenu2" class="div_txtmenu2"> </div>
+  </div>
+  <div id="modulo" class="numero_modulo">1</div>
+  <div id="numero_modulo" class="numero_modulo">1</div>
+  <div id="nombre_modulo" class="nombre_modulo">
+    <div>Generalidades</div>
+  </div>
+  <div id="nombre_modulo_2" class="nombre_modulo_2"> PARA EL ACCESO A FINANCIACIÓN </div>
+  <div id="logo" class="logo"></div>
+  <div class="logo_exc"></div>
+</div>
+</div>
+<div id="flechas" class="flechas">
+  <div id="flechas2" class="flechas2">
+    <div id="flecha_arriba" class="flecha_arriba"></div>
+    <div id="flecha_abajo" class="flecha_abajo" ></div>
+  </div>
+</div>
+<canvas id="canvas_principal" width="1260" height="600" style="position:absolute"></canvas>
+<div id="barra_inferior" class="barra_inferior"></div>
+<div id="instruccion_especial" class="instruccion_especial">
+  <table>
+    <td style="vertical-align:top"><span id="s1" class="simbolos">ì</span></td>
+      <td style="vertical-align:top"><span id="txt_ie"></span></td>
+      <td style="vertical-align:top"><span id="s2" class="simbolos">ì</span></td>
+  </table>
+</div>
+<div id="cont_over_principal_n" class="cont_over_principal_n">
+  <div id="over_principal_n" class="over_principal_n"></div>
+  <div id="cont_enlace_principal_n" class="cont_enlace_principal_n">
+    <div id="enlace_principal_n" class="enlace_principal_n"></div>
+  </div>
+</div>
+<div id="cont_over_principal" class="cont_over_principal">
+  <div id="over_principal" class="over_principal"></div>
+  <div id="cont_enlace_principal" class="cont_enlace_principal">
+    <div id="enlace_principal" class="enlace_principal"></div>
+  </div>
+</div>
+<div id="cont_over_principalbtn" class="cont_over_principalbtn">
+  <div id="over_principalbtn" class="over_principalbtn"></div>
+  <div id="cont_enlace_principalbtn" class="cont_enlace_principalbtn">
+    <div id="enlace_principalbtn" class="enlace_principalbtn"></div>
+  </div>
+</div>
+<div id="instruccion_especial2" class="instruccion_especial">
+  <table>
+    <td style="vertical-align:top"><span id="s3" class="simbolos">ì</span></td>
+      <td style="vertical-align:top"><span id="txt_ie2"></span></td>
+      <td style="vertical-align:top"><span id="s4" class="simbolos">ì</span></td>
+  </table>
+</div>
+<div id="mensaje_avance" class="mensaje_avance">
+  <div id="equis_mensaje" class="equis_mensaje"></div>
+  <div id="texto_mensaje_avance" class="texto_mensaje_avance"></div>
+</div>
+<div id="glosario" class="glosario">
+  <div id="equis_glosario" class="equis_glosario"><i class="fas fa-times"></i></div>
+  <div id="texto_glosario" class="texto_glosario">
+    <div class="tit_glosario"> GLOSARIO </div>
+    <div class="palabras_glosario">
+      <div class="palabra_glosario" data-page="3"> Activo (Pag. 3) </div>
+      <div class="palabra_glosario" data-page="3"> Activo Fijo </div>
+      <div class="palabra_glosario" data-page="3"> Activo Corriente </div>
+      <div class="palabra_glosario" data-page="3"> Ahorro </div>
+      <div class="palabra_glosario" data-page="6"> Balance General </div>
+      <div class="palabra_glosario" data-page="25"> Centrales de información financiera </div>
+      <div class="palabra_glosario" data-page="13"> Compras </div>
+      <div class="palabra_glosario" data-page="11"> Costos </div>
+    </div>
+  </div>
+</div>
+<div id="desarrollado" class="desarrollado"><i class="fa fa-copyright" aria-hidden="true"></i></div>
+<div id="btn_glosario" class="btn_glosario"><i class="fa fa-spell-check" aria-hidden="true"></i></div>
+<div id="cont_over_principalb" class="cont_over_principalb">
+  <div id="cont_enlace_principalb" class="cont_enlace_principalb">
+    <div id="enlace_principalb" class="enlace_principalb"></div>
+  </div>
+  <div id="over_principalb" class="over_principalb">
+    <div class="negrilla" style="margin-bottom: 0px;text-align: left;display: block;"> Contenido estructurado por: </div>
+    <table style="margin-top: 0px">
+      <td><div style="font-size: 13px;line-height: 14px;width:330px;text-align: justify;">
+            <ul>
+              <li><span class="negrilla">Merly Sulgey Gómez Sánchez:</span> Ingeniera de Sistemas, Magíster en Ingeniería</li>
+              <li><span class="negrilla">Luis Carlos Serrano Pinzón:</span> Ingeniero de Sistemas, Especialista en Seguridad informática</li>
+            </ul>
+          </div></td>
+    </table>
+    <div class="negrilla" style="margin-bottom: 0px;text-align: left;display: block;"> Con base en información extraída de: </div>
+    <div style="font-size: 13px;line-height: 18px;width:330px;text-align: justify;">
+      <ul>
+        <li><a class="enlace_c" a href="https://normaiso27001.es/" target="_blank">www.normaiso27001.es</a></li>
+        <li>NTC ISO 27000</li>
+        <li>NTC ISO 27001</li>
+        <li>NTC ISO 27002</li>
+      </ul>
+    </div>
+  </div>
+  <div style="display:inline-block;text-align:right;margin-top:16px;margin-left: -1px"> <img src="images/enlace_globo.png"> </div>
+</div>
+<div id="loader" >
+  <div class="spinner">
+    <div class="dot1"></div>
+    <div class="dot2"></div>
+  </div>
+</div>
+<div id="zoom" class="zoom">
+  <div id="contenido_zoom" class="contenido_zoom"><i class="fa fa-window-close" aria-hidden="true"></i></div>
+  <div id="equis_zoom" class="equis_zoom"> CERRAR IMAGEN </div>
+</div>
+<div id="instruccion_circ" class="instruccion_nav">
+  <div class="instruccion_navtxtx" style="width:1090px;top:40px;left:100px">
+    <div class="ayuda"> <i class="fas fa-star"></i> Ayuda de navegación </div>
+    <table>
+      <tr>
+        <td><div style="padding-left: 20px;border-left: 6px solid #95C11E"> Algunas pantallas, como esta, contienen subsecciones internas representadas por botones. </div></td>
+        <td><img src="images/inst_1.png"></td>
+      </tr>
+    </table>
+    <div style="height: 20px"> </div>
+    <table>
+      <tr>
+      <tr>
+        <td> Para acceder a cada subsección, debes pulsar en el botón correspondiente siempre y cuando se encuentre habilitado. </td>
+        <td><div style="margin:10px"> <img src="images/inst_2.png"> </div></td>
+        <td style="width: 30px"></td>
+        <td><div style="font-size: 24px;color:#004996;font-style: italic;padding: 10px"> Sabrás que un botón se encuentra habilitado porque está acompañado de un símbolo de un candado abierto. </div></td>
+        <td><img src="images/inst_3.png"></td>
+      </tr>
+      </tr>
+      
+    </table>
+    <div style="height: 20px"> </div>
+    <table>
+      <tr>
+        <td> Cada subsección se habilitará a medida que consultes totalmente la sección anterior. </td>
+        <td><img src="images/inst_4.png"></td>
+      </tr>
+    </table>
+  </div>
+  <div id="cerrar_ic" class="equis_zoom" style="width:182px;font-size: 25px;border-radius: 20px;top:560px;margin-right: 40px "> Entendido
+    <div style="color:#fbb900"><i class="fas fa-angle-double-right"></i></div>
+  </div>
+</div>
+<div id="instruccion_inf" class="instruccion_nav">
+  <div class="instruccion_navtxtx" style="width:1090px;top:40px;left:100px">
+    <div class="ayuda"> <i class="fas fa-star"></i> Ayuda de navegación </div>
+    <table>
+      <tr>
+        <td><img src="images/inst_5.png"></td>
+        <td><div style="padding-left: 20px;border-left: 6px solid #95C11E"> A veces los contenidos incluyen gráficos e infografías interactivas. </div></td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td> Para ampliar la información deberás pasar el mouse sobre diferentes zonas.
+          <div style="margin: 20px;color:#E5007D;text-align: center;text-shadow: 0 0 3px #ffffff"> Asegúrate de consultar todas ellas. </div>
+          Sabrás que consultaste una zona porque su tono cambia de color. </td>
+        <td><img src="images/inst_6.png"></td>
+      </tr>
+    </table>
+  </div>
+  <div id="cerrar_inf" class="equis_zoom" style="width:182px;font-size: 25px;border-radius: 20px;top:560px;margin-right: 40px "> Entendido
+    <div style="color:#fbb900"><i class="fas fa-angle-double-right"></i></div>
+  </div>
+</div>
+<div id="instruccion_ov" class="instruccion_nav">
+  <div class="instruccion_navtxtx" style="width:1090px;top:40px;left:100px">
+    <div class="ayuda"> <i class="fas fa-star"></i> Ayuda de navegación </div>
+    <table>
+      <tr>
+        <td><div style="padding-left: 20px;border-left: 6px solid #FBB900"> Algunos textos despliegan información adicional al ubicar el cursor sobre ellos.<br/>
+            Identificarás los textos interactivos porque tienen un fondo que resplandece. </div>
+          <div style="margin: 20px;color:#E5007D;text-align: center;text-shadow: 0 0 3px #ffffff"> Asegúrate de consultar la información de todos los textos interactivos. </div></td>
+        <td><img src="images/inst_7.png"></td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td> Visualmente sabrás que ya consultaste un texto interactivo porque su fondo cambia de color. </td>
+        <td><img src="images/inst_8.png"></td>
+      </tr>
+    </table>
+  </div>
+  <div id="cerrar_ov" class="equis_zoom" style="width:182px;font-size: 25px;border-radius: 20px;top:560px;margin-right: 40px "> Entendido
+    <div style="color:#fbb900"><i class="fas fa-angle-double-right"></i></div>
+  </div>
+</div>
+<div id="instruccion_mas" class="instruccion_nav">
+  <div class="instruccion_navtxtx" style="width:1090px;top:40px;left:100px">
+    <div class="ayuda"> <i class="fas fa-star"></i> Ayuda de navegación </div>
+    <table>
+      <tr>
+        <td><div style="padding-left: 20px;border-left: 6px solid #FBB900"> En algunas secciones encontrarás botones como este. </div></td>
+        <td><img src="images/inst_9.png"></td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td> No olvides pulsarlos ya que contienen información complementaria importante. </td>
+        <td><div style="margin: 10px;margin-top: 70px"> <img src="images/inst_10.png"> </div></td>
+      </tr>
+    </table>
+  </div>
+  <div id="cerrar_mas" class="equis_zoom" style="width:182px;font-size: 25px;border-radius: 20px;top:560px;margin-right: 40px "> Entendido
+    <div style="color:#fbb900"><i class="fas fa-angle-double-right"></i></div>
+  </div>
+</div>
+<div id="instruccion_per" class="instruccion_nav">
+  <div class="instruccion_navtxtx" style="width:1090px;top:40px;left:100px">
+    <div class="ayuda"> <i class="fas fa-star"></i> Ayuda de navegación </div>
+    <table>
+      <tr>
+        <td><div style="padding-left: 20px;border-left: 6px solid #FBB900"> En ocasiones encontrarás la imagen de alguno de los personajes guía: </div></td>
+        <td><div style="margin: 10px"> <img src="images/inst_11.png"> </div></td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td> Recuerda pulsar sobre esas imágenes para escuchar información complementaria. </td>
+        <td><div style="margin: 10px;margin-top: 70px"> <img src="images/inst_12.png"> </div></td>
+      </tr>
+    </table>
+  </div>
+  <div id="cerrar_per" class="equis_zoom" style="width:182px;font-size: 25px;border-radius: 20px;top:560px;margin-right: 40px "> Entendido
+    <div style="color:#fbb900"><i class="fas fa-angle-double-right"></i></div>
+  </div>
+</div>
+<div id="instruccion_clics" class="instruccion_nav">
+  <div class="instruccion_navtxtx" style="width:1090px;top:40px;left:100px">
+    <div class="ayuda"> <i class="fas fa-star"></i> Ayuda de navegación </div>
+    <table>
+      <tr>
+        <td rowspan="2"><div style="margin: 10px"> <img src="images/inst_13.png"> </div></td>
+        <td rowspan="2"><div style="padding-left: 20px;border-left: 6px solid #FBB900;width: 170px"> En la parte izquierda de esta pantalla encontrarás un esquema conformado por varias opciones </div></td>
+        <td style="width: 40px" rowspan="2"></td>
+        <td> Deberás pulsar la primera opción para acceder a su contenido, el cual se desplegará a la derecha de la pantalla. </td>
+        <td><div style="margin: 10px"> <img src="images/inst_14.png"> </div></td>
+      </tr>
+      <tr>
+        <td> Una vez consultes el contenido de una sección, podrás acceder al contenido de la siguiente.
+          <div style="margin: 20px;color:#E5007D;text-align: center;text-shadow: 0 0 3px #ffffff"> El cambio de color te indicará cuando cada opción se encuentra habilitada para ser consultada. </div></td>
+        <td><div style="margin: 10px"> <img src="images/inst_15.png"> </div></td>
+      </tr>
+    </table>
+  </div>
+  <div id="cerrar_clics" class="equis_zoom" style="width:182px;font-size: 25px;border-radius: 20px;top:560px;margin-right: 40px "> Entendido
+    <div style="color:#fbb900"><i class="fas fa-angle-double-right"></i></div>
+  </div>
+</div>
+<div id="indica_nav" class="indica_nav">
+  <div id="indica_nav_int" class='animated bounceup indica_nav_int'></div>
+</div>
+<div class="modulo_cerrado op0"> Has cerrado el curso de forma correcta. </div>
+<script type="text/javascript">activar_fondo = true;</script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<link rel="stylesheet" href="../../index.css">
+<link rel="stylesheet" href="../../cjs/jquery.mCustomScrollbar.css" />
+<link href="../../fonts/font-awesome/css/all.css" rel="stylesheet">
+<script src="../../cjs/easeljs-0.8.2.min.js"></script> 
+<script src="../../cjs/tweenjs-0.6.2.min.js"></script> 
+<script src="../../cjs/preloadjs-0.6.2.min.js"></script> 
+<script src="../../cjs/soundjs-0.6.2.min.js"></script> 
+<script src="page.js"></script> 
+<script src="../../principal.js"></script> 
+<script src="../../cjs/jquery.min.js"></script> 
+<script src="../../cjs/jquery.imagemapster.js"></script> 
+<script src="../../cjs/jquery-1.7.2.min.js"></script> 
+<script src="../../cjs/jquery.ui.touch-punch.min.js"></script> 
+<script src="../../cjs/jquery-ui.min.js"></script> 
+<script src="../../cjs/jquery.mCustomScrollbar.concat.min.js"></script> 
+<script>
+var canvas, stage, exportRoot;
+
+function init() {
+
+	canvas = document.getElementById("canvas");
+
+	var loader = new createjs.LoadQueue(false);
+	loader.installPlugin(createjs.Sound);
+	loader.addEventListener("fileload", handleFileLoad);
+	loader.addEventListener("complete", handleComplete);
+	loader.addEventListener("progress", handleProgress);
+	loader.loadManifest(lib.properties.manifest);	
+}
+
+function handleFileLoad(evt) {
+	if (evt.item.type == "image") { images[evt.item.id] = evt.result; }
+}
+
+function playSound(id, loop) {
+	createjs.Sound.play(id, createjs.Sound.INTERRUPT_EARLY, 0, 0, loop);
+}
+
+ancho_linea = 0;
+alto_linea = 10;
+max_ancho = 450;
+
+function handleProgress(evt) {
+	stage = new createjs.Stage(canvas);
+	var bordePadding = 2;
+	var borde = new createjs.Shape;
+	borde.graphics.beginFill("rgba(131,120,111,0.4)").drawRect(0, 0, max_ancho + bordePadding*2, alto_linea).endFill();
+	var linea_carga = new createjs.Shape();
+	linea_carga.graphics.beginFill("#009DDF").drawRect(0 + bordePadding,0 + bordePadding, ancho_linea, alto_linea - bordePadding*2).endFill();
+	
+	progreso = Math.round(evt.loaded * max_ancho);
+	ancho_linea = progreso;
+	
+	contenedor = new createjs.Container();
+	contenedor.x = 1240/2 - max_ancho/2;
+	contenedor.y = 495*4/5 - alto_linea/2;
+	contenedor.addChild(borde, linea_carga);
+	
+	//stage.addChild(contenedor);
+	stage.update();
+}
+
+function handleComplete(evt) {
+	var queue = evt.target;
+	
+	stage = new createjs.Stage(canvas);
+	createjs.Ticker.addEventListener("tick", stage);
+
+	/////Variables
+	sin_personaje = true;
+	globo_personaje = "Hemos terminado de estudiar nuestros jabones. Veamos qué tanto hemos aprendido sobre este tipo de producto por medio de la siguiente actividad.";
+	pausas_audio = [[0,8515],[450,8583]];
+	contenidos();	
+}
+</script>
+</head>
+<body onload="init();">
+<canvas id="canvas" width="1165" height="550"></canvas>
+<div id="instruccion_circulos" class="instruccion_circulos"> Seleccione verdadero (V) o falso (F) según corresponda a cada una de las siguientes afirmaciones: </div>
+
+<!---------------------------INICIO CONTENIDO-------------------> 
+<!-----------------------Inicio boton uno------------------->
+<div class="c_principal c_1_1">
+  <div class="item_c">
+    <div class="enunciado_vf" data-rta="v"> Los accionistas que representen el 5 % de las acciones en circulación del Banco pueden solicitar auditorías especializadas. </div>
+    <div class="enunciado_vf" data-rta="f"> Los administradores de la Entidad pueden adquirir acciones mientras están en ejercicio de sus cargos. </div>
+    <div class="enunciado_vf" data-rta="f"> El control interno solo es realizado por la Junta Directiva. </div>
+  </div>
+  <div class="item_c">
+    <div class="enunciado_vf" data-rta="v"> Los estados financieros deben ser aprobados por la Asamblea de Accionistas. </div>
+    <div class="enunciado_vf" data-rta="f"> El Revisor Fiscal es nombrado por la Junta Directiva. </div>
+    <div class="enunciado_vf" data-rta="v"> AV Villas tiene un solo secretario para la Asamblea General, la Junta Directiva y la Presidencia. </div>
+  </div>
+</div>
+<!----------------------------FIN CONTENIDO----------------------> 
+<!----------------------------POPS------------------------------->
+<div id="pop0" class="pop"> txt </div>
+</body>
+</html>

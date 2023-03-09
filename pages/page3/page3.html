@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<link rel="stylesheet" href="../../index.css">
+<link rel="stylesheet" href="../../cjs/jquery.mCustomScrollbar.css" />
+<link href="../../fonts/font-awesome/css/all.css" rel="stylesheet">
+<script src="../../cjs/easeljs-0.8.2.min.js"></script> 
+<script src="../../cjs/tweenjs-0.6.2.min.js"></script> 
+<script src="../../cjs/preloadjs-0.6.2.min.js"></script> 
+<script src="../../cjs/soundjs-0.6.2.min.js"></script> 
+<script src="page.js"></script> 
+<script src="../../principal.js"></script> 
+<script src="../../cjs/jquery.min.js"></script> 
+<script src="../../cjs/jquery.imagemapster.js"></script> 
+<script src="../../cjs/jquery.mCustomScrollbar.concat.min.js"></script> 
+<script>
+var canvas, stage, exportRoot;
+
+function init() {
+
+	canvas = document.getElementById("canvas");
+
+	var loader = new createjs.LoadQueue(false);
+	loader.installPlugin(createjs.Sound);
+	loader.addEventListener("fileload", handleFileLoad);
+	loader.addEventListener("complete", handleComplete);
+	loader.addEventListener("progress", handleProgress);
+	loader.loadManifest(lib.properties.manifest);	
+}
+
+function handleFileLoad(evt) {
+	if (evt.item.type == "image") { images[evt.item.id] = evt.result; }
+}
+
+function playSound(id, loop) {
+	createjs.Sound.play(id, createjs.Sound.INTERRUPT_EARLY, 0, 0, loop);
+}
+
+ancho_linea = 0;
+alto_linea = 10;
+max_ancho = 450;
+
+function handleProgress(evt) {
+	stage = new createjs.Stage(canvas);
+	var bordePadding = 2;
+    var borde = new createjs.Shape;
+    borde.graphics.beginFill("rgba(131,120,111,0.4)").drawRect(0, 0, max_ancho + bordePadding*2, alto_linea).endFill();
+    var linea_carga = new createjs.Shape();
+	linea_carga.graphics.beginFill("#009DDF").drawRect(0 + bordePadding,0 + bordePadding, ancho_linea, alto_linea - bordePadding*2).endFill();
+	
+    progreso = Math.round(evt.loaded * max_ancho);
+	ancho_linea = progreso;
+	
+	contenedor = new createjs.Container();
+	contenedor.x = 1240/2 - max_ancho/2;
+	contenedor.y = 495*4/5 - alto_linea/2;
+	contenedor.addChild(borde, linea_carga);
+	
+	//stage.addChild(contenedor);
+	stage.update();
+}
+
+function handleComplete(evt) {
+	var queue = evt.target;
+	
+	stage = new createjs.Stage(canvas);
+	createjs.Ticker.addEventListener("tick", stage);
+
+	/////Variables
+	sin_personaje = true;
+	globo_personaje = "Texto";
+	pausas_audio = [[0,16406],[977,19347]];
+	
+	contenidos();	
+}
+
+</script>
+</head>
+
+<body onload="init();">
+<canvas id="canvas" width="1165" height="550"></canvas>
+<div id="instruccion_circulos" class="instruccion_circulos"> </div>
+<div class="c_principal c_1">
+  <h1></h1>
+  <div class="item_c">
+    <div class="instruccion_interna">Pase el mouse sobre los íconos y textos resaltados.</div>
+    <div class="resaltado_especial" style="    width: 1120px;    margin: auto;">El capital del Banco está dividido en <span class="negrilla_sensible" id="zona_sensible0">acciones ordinarias</span> y <span class="negrilla_sensible" id="zona_sensible1">acciones con dividendo preferencial y sin derecho a voto</span>. </div>
+    <div>Algunas cuestiones importantes respecto a estas acciones son:</div>
+    <div class="infografia"> <img src="images/diap4.png" height="200">
+      <p></p>
+      <map data-restriccion="no">
+        <area id="zona_sensible2" shape="circ" coords="564,179,61">
+        <area id="zona_sensible3" shape="circ" coords="701,298,61">
+        <area id="zona_sensible4" shape="circ" coords="841,179,61">
+        <area id="zona_sensible5" shape="circ" coords="975,298,61">
+        <area id="zona_sensible6" shape="circ" coords="1115,176,61">
+        <area id="zona_sensible7" shape="circ" coords="1251,298,61">
+        <area id="zona_sensible8" shape="circ" coords="1387,179,61">
+      </map>
+    </div>
+  </div>
+</div>
+<div class="c_masinfo c_2_5">
+  <h1>Auditorías especializadas</h1>
+  <div class="item_c">
+    <h1></h1>
+  </div>
+  <div class="item_c" style="margin: 0 30px;">
+    <div class="txt_interno c_1">
+      <h1>Inicio</h1>
+      <div class="item_c">
+        <div class="instruccion_interna">Pase el mouse sobre los íconos.</div>
+        <div>Las auditorías especializadas se ejercerán dentro de los siguientes parámetros:</div>
+        <div class="infografia"> <img src="images/diap5.png" height="180">
+          <p></p>
+          <map data-restriccion="no">
+            <area id="zona_sensible9" shape="circ" coords="85,234,61">
+            <area id="zona_sensible10" shape="circ" coords="265,90,61">
+            <area id="zona_sensible11" shape="circ" coords="265,380,61">
+            <area id="zona_sensible12" shape="circ" coords="919,90,61">
+            <area id="zona_sensible13" shape="circ" coords="919,380,61">
+          </map>
+        </div>
+        <div class='instruccion_interna'><span class='indica_instclic'></span>Pulse el botón de la izquierda</div>
+      </div>
+    </div>
+    <div class="txt_interno c_1">
+      <h1>¿Cuándo solicitar una auditoría especializada?</h1>
+      <div class="item_c">
+        <div>Las auditorías especializadas podrán solicitarse en los siguientes casos:</div>
+        <div class="infografia"> <img src="images/diap6.png" height="200">
+          <map data-restriccion="no">
+            <area id="zona_sensible14" shape="circ" coords="113,114,95">
+            <area id="zona_sensible15" shape="circ" coords="339,114,95">
+            <area id="zona_sensible16" shape="circ" coords="565,114,95">
+          </map>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="pop0" class="pop"> Confieren a sus titulares los mismos deberes, derechos y beneficios, entre estos, el derecho a un voto en las deliberaciones de la Asamblea General de Accionistas y la adhesión a las decisiones que se tomen en esta. </div>
+<div id="pop1" class="pop">Confieren a su titular el derecho a recibir un dividendo mínimo fijado en el reglamento de suscripción, un reembolso preferencial de los aportes en caso de disolución de la Sociedad y otros derechos previstos para las acciones ordinarias, excepto el de participar y votar en la Asamblea de Accionistas. </div>
+<div id="pop2" class="pop">Los accionistas que representen por lo menos el 5 % de las acciones en circulación del Banco podrán solicitar a la Junta Directiva, a su costo y bajo su responsabilidad, la práctica de <span class="negrilla">auditorías especializadas</span>. </div>
+<div id="pop3" class="pop"> Los accionistas pueden obtener la convocatoria a la Asamblea General de Accionistas en todos los casos que se encuentren legalmente contemplados. </div>
+<div id="pop4" class="pop"> Todos los accionistas tienen derecho a la misma información, con el mismo detalle y en la misma época y oportunidad, con el fin de proteger sus derechos. </div>
+<div id="pop5" class="pop">La Sociedad pondrá a disposición de sus accionistas, a través de su página web, los documentos y la información asociada a los puntos del orden del día de su Asamblea General de Accionistas y las proposiciones que la Junta Directiva deba someter a su consideración. </div>
+<div id="pop6" class="pop"> Cualquier accionista puede proponer temas adicionales (razonables y relacionados con el desarrollo del objeto social de Banco) para la Asamblea General de Accionistas o presentar nuevas propuestas sobre asuntos ya incluidos, para esto debe presentar una solicitud escrita, dentro de los cinco días siguientes a la publicación del Aviso de Convocatoria, en la que se describan los accionistas, su número de acciones, el tema y las razones de su solicitud. La administración de la Sociedad decidirá si es necesario informar a la Junta Directiva al respecto. En caso de estimarlo conveniente, se incluirá en la Agenda de la Asamblea y se actualizará el Orden del Día en la Página Web. </div>
+<div id="pop7" class="pop">En caso de presentarse operaciones que puedan derivar en la dilución de capital de los accionistas, la Sociedad deberá explicar detalladamente sus características y ponerlas a disposición de la Asamblea General de Accionistas para el ejercicio del derecho de inspección. </div>
+<div id="pop8" class="pop">La información sobre composición accionaria del Banco se entrega al mercado mediante el diligenciamiento de los reportes correspondientes establecidos por la Superintendencia Financiera y a través de la página Web del Banco. </div>
+<div id="pop9" class="pop"> En ningún caso la auditoría podrá cubrir métodos de operación de los servicios de la Sociedad, procedimientos de mercadeo, negocios potenciales de la Sociedad, alianzas en curso, secretos industriales, derechos de propiedad industrial o intelectual, estrategias comerciales o documentos que se consideren reservados o de terceros. </div>
+<div id="pop10" class="pop"> La solicitud para realizarlas deberá presentarse por escrito, indicando las razones, los hechos y los asuntos específicos objeto de auditoría y el tiempo de duración. </div>
+<div id="pop11" class="pop">Deberán ser adelantadas por firmas o profesionales que se contraten para realizarlas, quienes deberán acreditar, como mínimo, la calidad del revisor fiscal que haya designado la Asamblea General de Accionistas para el periodo correspondiente. </div>
+<div id="pop12" class="pop"> Los papeles de trabajo del auditor especial estarán sujetos a reserva. </div>
+<div id="pop13" class="pop">La Junta Directiva tendrá la potestad de autorizar la realización de la auditoría especializada. </div>
+<div id="pop14" class="pop">Cuando la  Sociedad  tenga pérdidas que reduzcan en más del 30 % el patrimonio al final del ejercicio semestral. </div>
+<div id="pop15" class="pop">Cuando el Revisor Fiscal manifieste en sus dictámenes hallazgos relevantes que afecten sustancialmente a la Sociedad  o irregularidades graves  en el manejo  de la  contabilidad  o la  administración del patrimonio social. </div>
+<div id="pop16" class="pop"> Cuando existan serios indicios de negligencia en el manejo, dirección y administración de la Entidad que podría influir en los intereses económicos de los inversionistas o accionistas. </div>
+</body>
+</html>

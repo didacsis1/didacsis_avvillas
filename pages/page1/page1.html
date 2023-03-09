@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<link rel="stylesheet" href="../../index.css">
+<link rel="stylesheet" href="../../cjs/jquery.mCustomScrollbar.css" />
+<link href="../../fonts/font-awesome/css/all.css" rel="stylesheet">
+<script src="../../cjs/easeljs-0.8.2.min.js"></script> 
+<script src="../../cjs/tweenjs-0.6.2.min.js"></script> 
+<script src="../../cjs/preloadjs-0.6.2.min.js"></script> 
+<script src="../../cjs/soundjs-0.6.2.min.js"></script> 
+<script src="page.js"></script> 
+<script src="../../principal.js"></script> 
+<script src="../../cjs/jquery.min.js"></script> 
+<script src="../../cjs/jquery.imagemapster.js"></script> 
+<script src="../../cjs/jquery.mCustomScrollbar.concat.min.js"></script> 
+<script>
+var canvas, stage, exportRoot;
+
+function init() {
+
+	canvas = document.getElementById("canvas");
+
+	var loader = new createjs.LoadQueue(false);
+	loader.installPlugin(createjs.Sound);
+	loader.addEventListener("fileload", handleFileLoad);
+	loader.addEventListener("complete", handleComplete);
+	loader.addEventListener("progress", handleProgress);
+	loader.loadManifest(lib.properties.manifest);	
+}
+
+function handleFileLoad(evt) {
+	if (evt.item.type == "image") { images[evt.item.id] = evt.result; }
+}
+
+function playSound(id, loop) {
+	createjs.Sound.play(id, createjs.Sound.INTERRUPT_EARLY, 0, 0, loop);
+}
+
+ancho_linea = 0;
+alto_linea = 10;
+max_ancho = 450;
+
+function handleProgress(evt) {
+	stage = new createjs.Stage(canvas);
+	var bordePadding = 2;
+    var borde = new createjs.Shape;
+    borde.graphics.beginFill("rgba(131,120,111,0.4)").drawRect(0, 0, max_ancho + bordePadding*2, alto_linea).endFill();
+    var linea_carga = new createjs.Shape();
+	linea_carga.graphics.beginFill("#009DDF").drawRect(0 + bordePadding,0 + bordePadding, ancho_linea, alto_linea - bordePadding*2).endFill();
+	
+    progreso = Math.round(evt.loaded * max_ancho);
+	ancho_linea = progreso;
+	
+	contenedor = new createjs.Container();
+	contenedor.x = 1240/2 - max_ancho/2;
+	contenedor.y = 495*4/5 - alto_linea/2;
+	contenedor.addChild(borde, linea_carga);
+	
+	//stage.addChild(contenedor);
+	stage.update();
+}
+
+function handleComplete(evt) {
+	var queue = evt.target;
+	
+	stage = new createjs.Stage(canvas);
+	createjs.Ticker.addEventListener("tick", stage);
+
+	/////Variables
+	sin_personaje = true;
+	globo_personaje = "Texto";
+	pausas_audio = [[0,16406],[977,19347]];
+	
+	contenidos();	
+}
+
+</script>
+</head>
+
+<body onload="init();">
+<canvas id="canvas" width="1165" height="550"></canvas>
+<div id="instruccion_circulos" class="instruccion_circulos"> </div>
+<div class="c_principal c_1">
+  <h1></h1>
+  <div class="item_c">
+    <video style="height: 300px;"    controls preload="auto">
+      <source src="video/diap.mp4" type="video/mp4">
+      Your browser does not support the video tag. </video>
+  </div>
+</div>
+<div id="pop0" class="pop"> </div>
+<div id="pop1" class="pop"> </div>
+<div id="pop2" class="pop"> </div>
+<div id="pop3" class="pop"> </div>
+<div id="pop4" class="pop"> </div>
+<div id="pop5" class="pop"> </div>
+<div id="pop6" class="pop"> </div>
+<div id="pop7" class="pop"> </div>
+<div id="pop8" class="pop"> </div>
+<div id="pop9" class="pop"> </div>
+<div id="pop10" class="pop"> </div>
+<div id="pop11" class="pop"> </div>
+<div id="pop12" class="pop"> </div>
+<div id="pop13" class="pop"> </div>
+<div id="pop14" class="pop"> </div>
+<div id="pop15" class="pop"> </div>
+</body>
+</html>

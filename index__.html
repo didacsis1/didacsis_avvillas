@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js" id="html_inicio" width="auto">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+		<link rel="stylesheet" href="index.css">
+		<link href="fonts/font-awesome/css/all.css" rel="stylesheet">
+		
+		
+				<script type="text/javascript">
+	
+
+		function init() {
+			document.getElementById("contenedor_loader_inicio").style.visibility = "hidden";
+			document.getElementById("escena_inicio").style.visibility = "visible";
+
+			//document.getElementById("contenedor_loaderint").style.visibility = "hidden";
+			//document.getElementById("escena").style.visibility = "visible";
+			
+			//preguntaSeleccion(1,1);
+			//almacenaVariable();
+			ajuste();
+
+			
+		}
+
+		dispositivo_movil = false;
+	
+		ancho_1 = window.innerWidth;
+		alto_1 = window.innerHeight;
+		ancho_canvas_principal = 1280;
+		alto_canvas_principal = 620;
+
+		margen_x_canvas_principal = 10;
+		margen_y_canvas_principal = 10;
+		razon_anchos = ancho_canvas_principal / (ancho_canvas_principal+margen_x_canvas_principal);
+		razon_altos = alto_canvas_principal / (alto_canvas_principal+margen_y_canvas_principal);
+
+		razon_alto_ancho_margen = (alto_canvas_principal+margen_y_canvas_principal)/(ancho_canvas_principal+margen_x_canvas_principal);
+		razon_alto_ancho = alto_canvas_principal/ancho_canvas_principal;
+
+		//almacenaVariable();
+	//	ajuste();
+	/*
+		var ajustePantalla = setInterval(function() {
+    	
+    	ancho_1 = window.innerWidth;
+		alto_1 = window.innerHeight;
+				
+			if (ancho_1 != ancho_2 || alto_1 != alto_2){
+				ajuste();
+				
+				almacenaVariable();
+			}
+		}, 100);
+		function almacenaVariable(){
+			alto_2 = alto_1;	
+			ancho_2 = ancho_1;
+		}
+		*/
+	window.addEventListener("resize", ajuste, false);
+
+		function ajuste() {
+			ancho_ventana =  window.innerWidth;
+			alto_ventana =  window.innerHeight;
+		razon_alto_ancho_ventana = alto_ventana/ancho_ventana;
+		
+		//razon_ventana = ancho_ventana/alto_ventana;
+		//razon_ventana = alto_ventana/ancho_ventana;
+
+		
+
+
+	
+		//razon_ventana = ((ancho_ventana-margen_x_canvas_principal*razon_anchos)) / alto_ventana;
+		razon_ancho_ventana = ancho_ventana/(ancho_canvas_principal+margen_x_canvas_principal);
+		
+
+		razon_alto_ventana = alto_ventana/(alto_canvas_principal+margen_y_canvas_principal);
+
+		ancho_canvas = ancho_ventana*razon_anchos;
+		alto_canvas = alto_ventana*razon_altos;
+
+		if(razon_alto_ancho_ventana<razon_alto_ancho_margen){
+			
+			razon_venta = razon_alto_ventana;
+			
+			y_princial = (alto_ventana-alto_canvas)/razon_alto_ventana/2;
+			
+			x_principal = ancho_ventana/razon_alto_ventana/2-ancho_canvas/razon_ancho_ventana/2;
+			//x_principal = ancho_canvas;
+			if(dispositivo_movil){
+			//document.getElementById("orientacion").style.visibility = "hidden"; 
+			
+			}
+		} else {
+		
+
+			razon_venta = razon_ancho_ventana;
+			y_princial = (alto_ventana/razon_ancho_ventana)/2-alto_canvas/razon_alto_ventana/2;
+			x_principal = ((ancho_ventana-ancho_canvas)/razon_ancho_ventana)/2;
+
+		if(dispositivo_movil){
+			//document.getElementById("orientacion").style.visibility = "visible"; 
+
+		}
+		}
+
+		
+		//margin_left_nuevo = ancho_ventana-(ancho_canvas_principal/razon_ventana);
+		
+		//if(ancho_ventana>(ancho_canvas_principal+margen_x_canvas_principal)*razon_anchos){
+		//document.getElementById("html_completo").style.transform = "scale("+razon_venta+")";
+		
+		//document.getElementById("html_completo").style.width = Math.ceil(ancho_ventana/razon_venta)+"px";
+		//document.getElementById("html_completo").style.height = Math.ceil(alto_ventana/razon_venta)+"px";
+				//document.getElementById("html_completo").style.width = ancho_ventana+"px";
+		//document.getElementById("html_completo").style.height = alto_ventana+"px";
+		//console.log(razon_venta)
+		razon_venta = razon_venta.toFixed(1);
+		
+		document.getElementById("body_inicio").style.transform = "scale("+razon_venta+")";
+
+
+		//console.log(razon_venta)
+
+		ancho_contenedor = document.getElementById("body_inicio").clientWidth*razon_venta;
+		ancho_html = document.getElementById("html_inicio").clientWidth
+
+		document.getElementById("body_inicio").style.marginLeft = (ancho_html-ancho_contenedor)/2+"px";
+		
+		alto_contenedor = document.getElementById("body_inicio").clientHeight*razon_venta;
+		alto_html = document.getElementById("html_inicio").clientHeight
+
+		document.getElementById("body_inicio").style.marginTop = (alto_html-alto_contenedor)/2+"px";
+
+
+
+		//} else{
+		
+		}
+
+		</script>
+		
+	
+
+	</head>
+	<body  onload="init()" id="body_inicio" width="1280" height="620" style="margin: 0; overflow:hidden">
+		
+		<div id="contenedor_loader_inicio" class="contenedor_loader_inicio">
+			<div id="loader_inicio" class="loader_inicio"></div>
+		</div>
+
+		<div id="escena_inicio" class="escena_inicio" style="visibility: hidden;overflow: hidden;height: 600px">
+			<div style="text-align: center;">
+			<img src="images/zep2.png" style="margin: 0 auto">
+			</div>
+			
+			<div class="contenedor_nombre_leccion_ini" style="position: relative;overflow: hidden;margin-top:10px;height: 150px">
+				<div style="position: absolute;left:120px;top:0px">
+					<img src="images/bandera.png" width="1100">
+				</div>
+				<div style="position: relative;top:30px;width: 1000px;left:200px">
+					<div>
+						<table>
+							<td style="font-size: 30px;color:#383838">
+						PROGRAMA: CONOZCAMOS LAS CATEGORÍAS
+														
+							</td>
+							<td>
+								<div style="width: 70px;height:12px;border-bottom: 3px solid #ffffff;margin-left: 10px;box-shadow: 0 3px 0 rgba(0,0,0,.35);visibility: hidden;">
+									
+								</div>
+							</td>
+						</table>
+					</div>
+					<div style="color:#FFFFFF;margin-top: 20px;font-size: 38px">
+						
+						Curso: Categoría Toallas de Manos
+					</div>
+				</div>
+			</div>
+
+				<div id="inferior" style="text-align: center;">
+					<div style="text-align: center;">
+
+								<a onclick="abrirPantalla()" style="width:175px;text-align: center;display: inline-block;position: relative">
+							
+								<div id="btn_iniciar" class="btn_ini_i" style="display:inline-block;top:0px;height: 40px;line-height: 40px;padding:5px 15px "><span>
+						 		 <i class="fal fa-play-circle"></i></span> <span style="margin:0 0px">ABRIR</span> 
+								</div>
+								
+								</a>
+					</div>
+				</div>
+			</div>
+
+		
+	</body>
+	<script type="text/javascript">
+			ancho_pantalla = screen.innerWidth;
+			alto_pantalla = screen.innerHeight;
+			function abrirPantalla() {
+				window.open('index2.html', '_blank', 'location=yes,height='+alto_pantalla+',width='+ancho_pantalla+',scrollbars=yes,status=yes');
+				
+			}
+			function ventanaCargada() {
+				document.getElementById("inferior").innerHTML = "<div class='txt_inf'>Actualmente el programa se encuentra abierto en otra ventana.</div>";
+				
+			}
+			function ventanaCerrada() {
+				document.getElementById("inferior").innerHTML = "<div class='txt_inf'>Has cerrado el programa de forma correcta.</div>";
+				
+			}
+
+
+	</script>
+</html>
