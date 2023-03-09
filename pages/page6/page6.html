@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<link rel="stylesheet" href="../../index.css">
+<link rel="stylesheet" href="../../cjs/jquery.mCustomScrollbar.css" />
+<link href="../../fonts/font-awesome/css/all.css" rel="stylesheet">
+<script src="../../cjs/easeljs-0.8.2.min.js"></script> 
+<script src="../../cjs/tweenjs-0.6.2.min.js"></script> 
+<script src="../../cjs/preloadjs-0.6.2.min.js"></script> 
+<script src="../../cjs/soundjs-0.6.2.min.js"></script> 
+<script src="page.js"></script> 
+<script src="../../principal.js"></script> 
+<script src="../../cjs/jquery.min.js"></script> 
+<script src="../../cjs/jquery.imagemapster.js"></script> 
+<script src="../../cjs/jquery.mCustomScrollbar.concat.min.js"></script> 
+<script>
+var canvas, stage, exportRoot;
+
+function init() {
+
+	canvas = document.getElementById("canvas");
+
+	var loader = new createjs.LoadQueue(false);
+	loader.installPlugin(createjs.Sound);
+	loader.addEventListener("fileload", handleFileLoad);
+	loader.addEventListener("complete", handleComplete);
+	loader.addEventListener("progress", handleProgress);
+	loader.loadManifest(lib.properties.manifest);	
+}
+
+function handleFileLoad(evt) {
+	if (evt.item.type == "image") { images[evt.item.id] = evt.result; }
+}
+
+function playSound(id, loop) {
+	createjs.Sound.play(id, createjs.Sound.INTERRUPT_EARLY, 0, 0, loop);
+}
+
+ancho_linea = 0;
+alto_linea = 10;
+max_ancho = 450;
+
+function handleProgress(evt) {
+	stage = new createjs.Stage(canvas);
+	var bordePadding = 2;
+    var borde = new createjs.Shape;
+    borde.graphics.beginFill("rgba(131,120,111,0.4)").drawRect(0, 0, max_ancho + bordePadding*2, alto_linea).endFill();
+    var linea_carga = new createjs.Shape();
+	linea_carga.graphics.beginFill("#009DDF").drawRect(0 + bordePadding,0 + bordePadding, ancho_linea, alto_linea - bordePadding*2).endFill();
+	
+    progreso = Math.round(evt.loaded * max_ancho);
+	ancho_linea = progreso;
+	
+	contenedor = new createjs.Container();
+	contenedor.x = 1240/2 - max_ancho/2;
+	contenedor.y = 495*4/5 - alto_linea/2;
+	contenedor.addChild(borde, linea_carga);
+	
+	//stage.addChild(contenedor);
+	stage.update();
+}
+
+function handleComplete(evt) {
+	var queue = evt.target;
+	
+	stage = new createjs.Stage(canvas);
+	createjs.Ticker.addEventListener("tick", stage);
+
+	/////Variables
+	sin_personaje = true;
+	globo_personaje = "Texto";
+	pausas_audio = [[0,16406],[977,19347]];
+	
+	contenidos();	
+}
+
+</script>
+</head>
+
+<body onload="init();">
+<canvas id="canvas" width="1165" height="550"></canvas>
+<div id="instruccion_circulos" class="instruccion_circulos"> </div>
+<div class="c_principal c_1">
+  <h1>Asamblea General de Accionistas </h1>
+  <div class="item_c">
+    <div class="instruccion_interna">Pase el mouse sobre los íconos y textos resaltados.</div>
+    <div class="resaltado_especial">La Asamblea General de Accionistas cuenta con la facultad de ejercer el control directo sobre las actividades de los principales ejecutivos, directores y administradores. </div>
+    <div>Las responsabilidades de la Asamblea General de Accionistas como mecanismo de control son: </div>
+    <div class="infografia"> <img src="images/diap23.png" height="110">
+      <p></p>
+      <map data-restriccion="no">          
+        <area id="zona_sensible0" shape="circ" coords="113,114,95">
+        <area id="zona_sensible1" shape="circ" coords="339,114,95">
+        <area id="zona_sensible2" shape="circ" coords="565,114,95">
+      </map>
+    </div>
+    <div id="zona_sensible3" class="negrilla_sensible">
+      <p><i class="fad fa-comment-exclamation"></i></p>
+      <p>Dato de interés</p>
+    </div>
+  </div>
+</div>
+<div class="c_principal c_2_6">
+  <h1>Control Interno </h1>
+  <div class="item_c">
+    <h1></h1>
+  </div>
+  <div class="item_c"  style="margin: 0 30px;">
+    <div class="txt_interno c_1">
+      <h1>Inicio</h1>
+      <div class="item_c">
+        <div>El control interno es un proceso realizado por la Junta Directiva, los administradores y demás funcionarios de la Entidad para proporcionar seguridad en la búsqueda del cumplimiento de los objetivos de la Entidad, teniendo como fundamento los principios de <span class="negrilla">autocontrol, autorregulación y autogestión</span>.</div>
+        <div class="instruccion_interna">Pase el mouse sobre el dato de interés</div>
+        <div id="zona_sensible4" class="negrilla_sensible">
+          <p><i class="fad fa-comment-exclamation"></i></p>
+          <p>Dato de interés</p>
+        </div>
+        <div class='instruccion_interna'><span class='indica_instclic'></span>Pulse los botones de la izquierda para ampliar la información.</div>
+      </div>
+    </div>
+    <div class="txt_interno c_1">
+      <h1>Objetivos</h1>
+      <div class="item_c">
+        <div>El Sistema de Control Interno debe asegurar el cumplimiento de los siguientes objetivos:</div>
+        <div class="infografia"> <img src="images/diap25.png" height="250">
+          <map data-restriccion="no">
+            <area id="zona_sensible5" shape="circ" coords="65,274,62">
+            <area id="zona_sensible6" shape="circ" coords="247,142,62">
+            <area id="zona_sensible7" shape="circ" coords="553,64,62">
+            <area id="zona_sensible8" shape="circ" coords="861,146,62">
+            <area id="zona_sensible9" shape="circ" coords="1037,276,62">
+          </map>
+        </div>
+      </div>
+    </div>
+    <div class="txt_interno c_1">
+      <h1>Responsabilidades</h1>
+      <div class="item_c">
+        <div class="instruccion_interna">Pase el mouse sobre los textos resaltados</div>
+        <table style="text-align: center; margin: auto;">
+          <tr>
+            <td><img src="images/diap26a.png" height="200">
+              <div class="negrilla_sensible" id="zona_sensible10">Junta Directiva</div></td>
+            <td><img src="images/diap26b.png" height="200">
+              <div class="negrilla_sensible" id="zona_sensible11">Gestores y funcionarios</div></td>
+          </tr>
+        </table>
+        <div id="zona_sensible12" class="negrilla_sensible">
+          <p><i class="fad fa-comment-exclamation"></i></p>
+          <p>Dato de interés</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="c_principal c_1_1">
+  <h1>Sistemas de Administración de Riesgo</h1>
+  <div class="item_c"><img src="images/diap27.png" height="300"></div>
+  <div class="item_c">
+    <div class="txt_c">
+      <div>La Junta Directiva del Banco establece los <span class="negrilla">Riesgos Inherentes de Alto Impacto</span> para el Banco y adopta el <span class="negrilla">Marco de Apetito de Riesgo</span>, bajo el cual se debe regir la gestión de los siguientes riesgos: </div>
+      <table class="lista_vinetas">
+        <tr>
+          <td class="vineta"></td>
+          <td>Riesgo de Crédito</td>
+        </tr>
+        <tr>
+          <td class="vineta"></td>
+          <td>Riesgo de Mercado y liquidez </td>
+        </tr>
+        <tr>
+          <td class="vineta"></td>
+          <td>Riesgo Operativo </td>
+        </tr>
+        <tr>
+          <td class="vineta"></td>
+          <td>Continuidad del Negocio </td>
+        </tr>
+        <tr>
+          <td class="vineta"></td>
+          <td>Riesgo SARLAFT </td>
+        </tr>
+        <tr>
+          <td class="vineta"></td>
+          <td>Riesgo de Seguridad y Ciberseguridad </td>
+        </tr>
+        <tr>
+          <td class="vineta"></td>
+          <td>Riesgo de Cumplimiento Regulatorio </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="c_masinfo c_2_5">
+  <h1>Objetivos y lineamientos de la Gestión de Riesgos</h1>
+  <div class="item_c">
+    <h1></h1>
+  </div>
+  <div class="item_c" style="margin: 0 16px;">
+    <div class="txt_interno c_1">
+      <h1>Inicio</h1>
+      <div class="item_c" style="margin: 0 10px;">
+        <div>La Gestión de Riesgos en el Banco se enfoca en el cumplimiento de los siguientes objetivos:</div>
+        <div class="infografia"> <img src="images/diap28.png" height="80">
+                    <map data-restriccion="no">
+            <area id="zona_sensible13" shape="circ" coords="109,120,94">
+            <area id="zona_sensible14" shape="circ" coords="337,118,94">
+          </map>
+        </div>
+        <div class="resaltado_especial">Para el cumplimiento de estos objetivos, el Banco adoptó una Estructura de Gobierno en la que los responsables de la gestión de los riesgos asumen lineamientos para el desarrollo de su función. </div>
+        <div class='instruccion_interna'><span class='indica_instclic'></span>Pulse los botones de la izquierda para conocer estos lineamientos.</div>
+      </div>
+    </div>
+    <div class="txt_interno c_1">
+      <h1>Autoridad</h1>
+      <div class="item_c">
+        <div>El responsable de la gestión de cada uno de los tipos de riesgo posee la jerarquía y autoridad suficiente para el desarrollo efectivo de sus funciones. Además cuenta con:</div>
+        <div class="infografia"> <img src="images/diap29.png" height="200">
+          <map data-restriccion="no">
+            <area id="zona_sensible15" shape="circ" coords="147,92,61">
+            <area id="zona_sensible16" shape="circ" coords="147,380,61">
+            <area id="zona_sensible17" shape="circ" coords="797,94,61">
+            <area id="zona_sensible18" shape="circ" coords="961,236,61">
+            <area id="zona_sensible19" shape="circ" coords="797,380,61">
+          </map>
+        </div>
+      </div>
+    </div>
+    <div class="txt_interno c_1_1">
+      <h1>Responsabilidades</h1>
+      <div class="item_c"><img src="images/diap30.png" height="250"></div>
+      <div class="item_c">
+        <div class="instruccion_interna">Descargue el archivo para conocer los deberes de los responsables de la gestión de cada uno de los tipos de riesgo</div>
+        <a href="documents/Funciones_Gestiondelriesgo.pdf" class="descarga" download>Funciones de los responsables de la Gestión de Riesgos</a> </div>
+    </div>
+    <div class="txt_interno c_3_4">
+      <h1>Independencia</h1>
+      <div class="item_c"><img src="images/diap31.png" height="200"></div>
+      <div class="item_c">
+        <div class="txt_c">
+          <div>El responsable de la gestión de cada uno de los tipos de riesgo tiene la autoridad para desarrollar sus responsabilidades de forma independiente y debe demostrar <span class="negrilla">independencia de criterio</span> con respecto a cualquier interés que pueda considerarse incompatible. </div>
+          <div class="instruccion_interna">Pase el mouse sobre el dato de interés</div>
+          <div id="zona_sensible20" class="negrilla_sensible">
+            <p><i class="fad fa-comment-exclamation"></i></p>
+            <p>Dato de interés</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="c_principal c_1_1">
+  <h1>Contraloría General</h1>
+  <div class="item_c"><img src="images/diap32.png" height="300"></div>
+  <div class="item_c">
+    <div class="txt_c">
+      <div>La Contraloría General se encarga de desarrollar la actividad de <span class="negrilla">auditoría interna </span>en el Banco con el fin de proporcionar una <span class="negrilla">opinión independiente</span> sobre la eficacia de los procesos de gobierno corporativo, gestión de riesgos y cumplimiento, promoviendo la <span class="negrilla">cultura de autocontrol.</span> </div>
+      <div class="resaltado_especial">El alcance de su trabajo, asignación de obligaciones, independencia, responsabilidad y autoridad se encuentran consagrados en el Estatuto de la Actividad de Auditoría Interna, aprobado por el Comité de Auditoría. </div>
+    </div>
+  </div>
+</div>
+<div class="c_principal c_1">
+  <h1>Revisoría Fiscal </h1>
+  <div class="item_c">
+    <div class="resaltado_especial">La Entidad tiene un <span class="negrilla">Revisor Fiscal</span>, con su correspondiente suplente, nombrados por la <span class="negrilla">Asamblea General de Accionistas</span> para un período de un año. </div>
+    <div>Algunos aspectos importantes respecto a la designación, remuneración y desempeño del Revisor Fiscal son: </div>
+    <div class="infografia"> <img src="images/diap33.png" height="250">
+      
+      <map data-restriccion="no">
+          <area id="zona_sensible21" shape="circ" coords="113,116,97">
+                <area id="zona_sensible22" shape="circ" coords="337,114,97">
+                <area id="zona_sensible23" shape="circ" coords="559,114,97">
+                <area id="zona_sensible24" shape="circ" coords="785,114,97">
+                <area id="zona_sensible25" shape="circ" coords="1010,114,97">
+                <area id="zona_sensible26" shape="circ" coords="113,350,97">
+                <area id="zona_sensible27" shape="circ" coords="337,350,97">
+                <area id="zona_sensible28" shape="circ" coords="559,350,97">
+                <area id="zona_sensible29" shape="circ" coords="785,350,97">
+                <area id="zona_sensible30" shape="circ" coords="1010,343,97">
+      </map>
+    </div>
+  </div>
+</div>
+<div id="pop0" class="pop"> Determinar los mecanismos para la evaluación y control de las actividades de los administradores, los principales ejecutivos y los directores. </div>
+<div id="pop1" class="pop"> Efectuar el examen y la aprobación o improbación del informe de gestión, los estados financieros, los balances de fin de ejercicio y de las cuentas que deben rendir el Representante Legal de la Entidad y la Junta Directiva. </div>
+<div id="pop2" class="pop">Considerar y aprobar el informe del Revisor Fiscal que ordena la ley. </div>
+<div id="pop3" class="pop"> Los administradores de la Entidad no podrán enajenar o adquirir acciones mientras estén en ejercicio de sus cargos, sino cuando se trate de operaciones ajenas a motivos de especulación y con autorización de la Junta Directiva, otorgada con el voto favorable de las dos terceras partes de sus miembros.  Esta restricción no aplica cuando el administrador adquiera acciones en ejercicio del derecho de preferencia. </div>
+<div id="pop4" class="pop">El control interno debe promover la eficiencia de la Entidad, de manera que se reduzcan los riesgos de pérdidas de activos operacionales y financieros, y se propicie la preparación y difusión de estados financieros confiables, así como el cumplimiento de las disposiciones legales y estatutarias. </div>
+<div id="pop5" class="pop">Mejorar la eficiencia (capacidad de alcanzar las metas y/o resultados propuestos) y eficacia (capacidad de producir el máximo de resultados con el mínimo de recursos, energía y tiempo) en las operaciones. </div>
+<div id="pop6" class="pop">Realizar una gestión adecuada de los riesgos. </div>
+<div id="pop7" class="pop"> Aumentar la confiabilidad y oportunidad en la información financiera generada por la Entidad.</div>
+<div id="pop8" class="pop">Dar un adecuado cumplimiento de la normatividad y regulaciones aplicables a la Entidad. </div>
+<div id="pop9" class="pop"> Atender los lineamientos generales que imparta Grupo Aval Acciones y Valores S.A. en los temas relacionados con control interno, incluyendo la realización de auditorías especiales para validar el cumplimiento del Sistema de Control Interno. <br>
+  El costo de estas auditorías será asumido por el Banco. </div>
+<div id="pop10" class="pop"> Debe definir las políticas y los procedimientos del Sistema de Control Interno (esto debe constar por escrito y divulgarse a los directivos) y supervisar su operación.<br>
+  Para el adecuado cumplimiento de esta labor cuenta con el Comité de Auditoría. </div>
+<div id="pop11" class="pop"> Deben implementar y dar fiel cumplimiento a las medidas y procedimientos de control interno para procurar el cumplimiento a los objetivos trazados por la Junta Directiva. </div>
+<div id="pop12" class="pop"> Los auditores internos y externos y el Revisor Fiscal son un complemento de la Política de Control Interno de la Entidad, por lo que los funcionarios y la dirección deben prestarles toda la colaboración necesaria. </div>
+<div id="pop13" class="pop">Realizar una adecuada gestión, de forma que los riesgos materiales sean identificados, medidos, controlados y monitoreados. </div>
+<div id="pop14" class="pop"> Mantener y monitorear un marco de apetito de riesgo acorde con la realidad del Banco y los objetivos corporativos. </div>
+<div id="pop15" class="pop">La autoridad para acceder a la Junta Directiva y al Comité de Riesgos respectivo o Alta Gerencia sin ningún impedimento. </div>
+<div id="pop16" class="pop">La autoridad para reunirse con la Junta Directiva y el Comité de riesgos respectivo sin la presencia de la Alta Gerencia. </div>
+<div id="pop17" class="pop">Acceso a los registros, información y personal del Banco. </div>
+<div id="pop18" class="pop"> Los recursos y la capacidad para definir el alcance de la gestión del riesgo con el fin de lograr los objetivos esperados. </div>
+<div id="pop19" class="pop">La autoridad para hacer seguimiento de las medidas tomadas por la administración, en respuesta a los problemas identificados y a las recomendaciones efectuadas. </div>
+<div id="pop20" class="pop"> Los Comités definidos o la Junta Directiva, instancias colegiadas para la administración de cada uno de los tipos de riesgo, son las encargadas de aprobar las políticas y procedimientos para su gestión. </div>
+<div id="pop21" class="pop"> Puede ser reelegido o removido libremente por la Asamblea General de Accionistas. </div>
+<div id="pop22" class="pop"> Su remuneración es asignada por la Asamblea General de Accionistas, teniendo en cuenta los recursos humanos y técnicos necesarios para el desempeño de sus funciones. </div>
+<div id="pop23" class="pop">Todo accionista tiene derecho a someter a consideración de la Asamblea los candidatos para este cargo. Corresponderá a la Junta Directiva, a través del Comité de Auditoría, someter a consideración de la Asamblea General de Accionistas la hoja de vida de los posibles candidatos. </div>
+<div id="pop24" class="pop">La Junta no podrá proponer como candidatos a firmas que hayan sido objeto de inhabilitación, suspensión o cualquier otro tipo de sanción impuestas por la auditoría financiera de la autoridad competente. </div>
+<div id="pop25" class="pop"> La selección del Revisor Fiscal se basa en criterios de profesionalidad, experiencia y honorabilidad. </div>
+<div id="pop26" class="pop">El Revisor Fiscal no podrá ser accionista de la Entidad ni tener incompatibilidades e inhabilidades, teniendo en cuenta la ley y la Circular Básica Jurídica de la Superintendencia Financiera. </div>
+<div id="pop27" class="pop">Cuando se designe una asociación o firma de contadores como Revisor Fiscal, esta deberá nombrar un contador público que desempeñe personalmente el cargo. </div>
+<div id="pop28" class="pop"> La Superintendencia Financiera es la encargada de la posesión del Revisor Fiscal, la cual sólo se efectuará una vez esta se cerciore del carácter, idoneidad y experiencia del revisor fiscal elegido. </div>
+<div id="pop29" class="pop"> Las funciones del Revisor Fiscal y los informes que debe emitir se encuentran consagrados en la ley, la regulación de la Superintendencia Financiera y en los estatutos. </div>
+<div id="pop30" class="pop"> Las funciones de Revisor Fiscal son incompatibles con el desempeño de cualquier otro cargo o empleo dentro de la Entidad o sus subordinadas. </div>
+</body>
+</html>

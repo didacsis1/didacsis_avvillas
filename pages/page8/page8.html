@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<link rel="stylesheet" href="../../index.css">
+<link rel="stylesheet" href="../../cjs/jquery.mCustomScrollbar.css" />
+<link href="../../fonts/font-awesome/css/all.css" rel="stylesheet">
+<script src="../../cjs/easeljs-0.8.2.min.js"></script> 
+<script src="../../cjs/tweenjs-0.6.2.min.js"></script> 
+<script src="../../cjs/preloadjs-0.6.2.min.js"></script> 
+<script src="../../cjs/soundjs-0.6.2.min.js"></script> 
+<script src="page.js"></script> 
+<script src="../../principal.js"></script> 
+<script src="../../cjs/jquery.min.js"></script> 
+<script src="../../cjs/jquery.imagemapster.js"></script> 
+<script src="../../cjs/jquery.mCustomScrollbar.concat.min.js"></script> 
+<script>
+var canvas, stage, exportRoot;
+
+function init() {
+
+	canvas = document.getElementById("canvas");
+
+	var loader = new createjs.LoadQueue(false);
+	loader.installPlugin(createjs.Sound);
+	loader.addEventListener("fileload", handleFileLoad);
+	loader.addEventListener("complete", handleComplete);
+	loader.addEventListener("progress", handleProgress);
+	loader.loadManifest(lib.properties.manifest);	
+}
+
+function handleFileLoad(evt) {
+	if (evt.item.type == "image") { images[evt.item.id] = evt.result; }
+}
+
+function playSound(id, loop) {
+	createjs.Sound.play(id, createjs.Sound.INTERRUPT_EARLY, 0, 0, loop);
+}
+
+ancho_linea = 0;
+alto_linea = 10;
+max_ancho = 450;
+
+function handleProgress(evt) {
+	stage = new createjs.Stage(canvas);
+	var bordePadding = 2;
+    var borde = new createjs.Shape;
+    borde.graphics.beginFill("rgba(131,120,111,0.4)").drawRect(0, 0, max_ancho + bordePadding*2, alto_linea).endFill();
+    var linea_carga = new createjs.Shape();
+	linea_carga.graphics.beginFill("#009DDF").drawRect(0 + bordePadding,0 + bordePadding, ancho_linea, alto_linea - bordePadding*2).endFill();
+	
+    progreso = Math.round(evt.loaded * max_ancho);
+	ancho_linea = progreso;
+	
+	contenedor = new createjs.Container();
+	contenedor.x = 1240/2 - max_ancho/2;
+	contenedor.y = 495*4/5 - alto_linea/2;
+	contenedor.addChild(borde, linea_carga);
+	
+	//stage.addChild(contenedor);
+	stage.update();
+}
+
+function handleComplete(evt) {
+	var queue = evt.target;
+	
+	stage = new createjs.Stage(canvas);
+	createjs.Ticker.addEventListener("tick", stage);
+
+	/////Variables
+	sin_personaje = true;
+	globo_personaje = "Texto";
+	pausas_audio = [[0,16406],[977,19347]];
+	
+	contenidos();	
+}
+
+</script>
+</head>
+
+<body onload="init();">
+<canvas id="canvas" width="1165" height="550"></canvas>
+<div id="instruccion_circulos" class="instruccion_circulos"> </div>
+<div class="c_principal c_2_6">
+  <h1>Subtítulo</h1>
+  <div class="item_c">
+    <h1></h1>
+  </div>
+  <div class="item_c"  style="margin: 0 30px;">
+    <div class="txt_interno c_1">
+      <h1>Inicio</h1>
+      <div class="item_c"><img src="images/diap35.png" height="300">
+        <div class='instruccion_interna' style="width: 500px; margin: auto;"><span class='indica_instclic'></span>Pulse los botones de la izquierda para ampliar la información sobre cada uno de los grupos de interés.</div>
+      </div>
+    </div>
+    <div class="txt_interno c_7_5">
+      <h1>Colaboradores</h1>
+      <div class="item_c">
+        <div>Los principales aspectos de la relación con los colaboradores se encuentran consagrados en el documento <span class="negrilla">“Políticas para Gestionar a Nuestra Gente”</span>. </div>
+        <img src="images/diap36.png" height="305"></div>
+      <div class="item_c"><div>En este documento se plasman distintas políticas como:</div>
+        <table class="lista_vinetas">
+          <tr>
+            <td class="vineta"></td>
+            <td> Política Salarial </td>
+          </tr>
+          <tr>
+            <td class="vineta"></td>
+            <td> Política de Selección de Personal </td>
+          </tr>
+          <tr>
+            <td class="vineta"></td>
+            <td> Política de Vinculación </td>
+          </tr>
+          <tr>
+            <td class="vineta"></td>
+            <td> Política de Formación y Desarrollo </td>
+          </tr>
+          <tr>
+            <td class="vineta"></td>
+            <td> Política de Gestión de Desempeño </td>
+          </tr>
+          <tr>
+            <td class="vineta"></td>
+            <td> Política de Prestaciones </td>
+          </tr>
+          <tr>
+            <td class="vineta"></td>
+            <td> Política de Beneficios </td>
+          </tr>
+          <tr>
+            <td class="vineta"></td>
+            <td> Política de Riesgos Laborales </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="txt_interno c_5_6">
+      <h1>Consumidores financieros</h1>
+      <div class="item_c"><img src="images/diap37.png" height="250"></div>
+      <div class="item_c">
+        <div class="txt_c">
+          <div>En el Banco se incentiva una <span class="negrilla">cultura centrada en el cliente</span>, brindando productos y servicios con <span class="negrilla">estándares de seguridad y calidad</span>, y poniendo a su disposición <span class="negrilla">publicidad e información transparente, clara, veraz, oportuna y verificable</span> sobre las características de los productos o servicios ofrecidos. </div>
+        </div>
+        <div class="instruccion_interna">Pase el mouse sobre el dato de interés</div>
+        <div id="zona_sensible0" class="negrilla_sensible">
+          <p><i class="fad fa-comment-exclamation"></i></p>
+          <p>Dato de interés</p>
+        </div>
+      </div>
+    </div>
+    <div class="txt_interno c_1">
+      <h1>Proveedores</h1>
+      <div class="item_c">
+        <div class="resaltado_especial">El Banco cuenta con el <span class="negrilla">Manual de Compras y Servicios</span> el cual contiene un capítulo dedicado a la Administración de Proveedores, allí se establecen las normas y procedimientos relacionados con su vinculación y registro. </div>
+        <div>Algunos aspectos importantes al respecto son: </div>
+        <div class="infografia"> <img src="images/diap38.png" height="200">
+          <map data-restriccion="no">              
+            <area id="zona_sensible1" shape="circ" coords="113,114,95">
+            <area id="zona_sensible2" shape="circ" coords="339,114,95">
+            <area id="zona_sensible3" shape="circ" coords="565,114,95">
+          </map>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="pop0" class="pop">AV Villas cuenta con el <span class="negrilla">Manual SAC</span> en el cual se contemplan, entre otros aspectos, las <span class="negrilla">Políticas Generales del Sistema de Atención al Consumidor Financiero (SAC)</span>, que tiene como ejes la <span class="negrilla">debida atención y protección</span> al consumidor financiero, y la promoción de un <span class="negrilla">ambiente de atención y respeto</span> hacia sus clientes y usuarios. </div>
+<div id="pop1" class="pop">La Junta Directiva será quien establezca la escala de atribuciones para la aprobación de las contrataciones. 
+ </div>
+<div id="pop2" class="pop">En todo proceso de negociación se analizarán criterios de oportunidad, calidad y precio, antes de tomar la decisión de adjudicación. Todo contrato deberá contar con el previo visto bueno del Área Jurídica de la Entidad.
+ </div>
+<div id="pop3" class="pop">Todo funcionario deberá evitar cualquier situación que pueda involucrar un conflicto entre sus intereses personales y los de la Entidad, e informarlo a su inmediato superior. En caso contrario, se someterá a acciones y sanciones civiles, penales y laborales, establecidas en el Código de Ética, Conducta y Solución de Conflictos de Interés y en el Reglamento Interno de Trabajo. Las situaciones que involucren un conflicto de interés serán evaluadas por la Junta Directiva, quienes determinarán las acciones a seguir. Si alguno de los miembros de la Junta Directiva se encuentra ante una situación de este tipo, será evaluado y dirimido por los demás miembros de la Junta Directiva.
+ </div>
+<div id="pop4" class="pop"> </div>
+<div id="pop5" class="pop"> </div>
+<div id="pop6" class="pop"> </div>
+<div id="pop7" class="pop"> </div>
+<div id="pop8" class="pop"> </div>
+<div id="pop9" class="pop"> </div>
+<div id="pop10" class="pop"> </div>
+<div id="pop11" class="pop"> </div>
+<div id="pop12" class="pop"> </div>
+<div id="pop13" class="pop"> </div>
+<div id="pop14" class="pop"> </div>
+<div id="pop15" class="pop"> </div>
+</body>
+</html>

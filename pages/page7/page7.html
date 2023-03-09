@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<link rel="stylesheet" href="../../index.css">
+<link rel="stylesheet" href="../../cjs/jquery.mCustomScrollbar.css" />
+<link href="../../fonts/font-awesome/css/all.css" rel="stylesheet">
+<script src="../../cjs/easeljs-0.8.2.min.js"></script> 
+<script src="../../cjs/tweenjs-0.6.2.min.js"></script> 
+<script src="../../cjs/preloadjs-0.6.2.min.js"></script> 
+<script src="../../cjs/soundjs-0.6.2.min.js"></script> 
+<script src="page.js"></script> 
+<script src="../../principal.js"></script> 
+<script src="../../cjs/jquery.min.js"></script> 
+<script src="../../cjs/jquery.imagemapster.js"></script> 
+<script src="../../cjs/jquery.mCustomScrollbar.concat.min.js"></script> 
+<script>
+var canvas, stage, exportRoot;
+
+function init() {
+
+	canvas = document.getElementById("canvas");
+
+	var loader = new createjs.LoadQueue(false);
+	loader.installPlugin(createjs.Sound);
+	loader.addEventListener("fileload", handleFileLoad);
+	loader.addEventListener("complete", handleComplete);
+	loader.addEventListener("progress", handleProgress);
+	loader.loadManifest(lib.properties.manifest);	
+}
+
+function handleFileLoad(evt) {
+	if (evt.item.type == "image") { images[evt.item.id] = evt.result; }
+}
+
+function playSound(id, loop) {
+	createjs.Sound.play(id, createjs.Sound.INTERRUPT_EARLY, 0, 0, loop);
+}
+
+ancho_linea = 0;
+alto_linea = 10;
+max_ancho = 450;
+
+function handleProgress(evt) {
+	stage = new createjs.Stage(canvas);
+	var bordePadding = 2;
+    var borde = new createjs.Shape;
+    borde.graphics.beginFill("rgba(131,120,111,0.4)").drawRect(0, 0, max_ancho + bordePadding*2, alto_linea).endFill();
+    var linea_carga = new createjs.Shape();
+	linea_carga.graphics.beginFill("#009DDF").drawRect(0 + bordePadding,0 + bordePadding, ancho_linea, alto_linea - bordePadding*2).endFill();
+	
+    progreso = Math.round(evt.loaded * max_ancho);
+	ancho_linea = progreso;
+	
+	contenedor = new createjs.Container();
+	contenedor.x = 1240/2 - max_ancho/2;
+	contenedor.y = 495*4/5 - alto_linea/2;
+	contenedor.addChild(borde, linea_carga);
+	
+	//stage.addChild(contenedor);
+	stage.update();
+}
+
+function handleComplete(evt) {
+	var queue = evt.target;
+	
+	stage = new createjs.Stage(canvas);
+	createjs.Ticker.addEventListener("tick", stage);
+
+	/////Variables
+	sin_personaje = true;
+	globo_personaje = "Texto";
+	pausas_audio = [[0,16406],[977,19347]];
+	
+	contenidos();	
+}
+
+</script>
+</head>
+
+<body onload="init();">
+<canvas id="canvas" width="1165" height="550"></canvas>
+<div id="instruccion_circulos" class="instruccion_circulos"> </div>
+<div class="c_principal c_7_8">
+  <h1></h1>
+  <div class="item_c">
+    <div>El Banco revela información clara y precisa tanto de los hechos relevantes establecidos legalmente como de otros aspectos materiales del Banco. </div>
+    <img src="images/diap34.png" height="216"></div>
+  <div class="item_c">
+    <div class="instruccion_interna">Pase el mouse sobre los textos resaltados</div>
+    <div class="txt_c">
+      <div>Los medios de suministro de información dispuestos por regulación son principalmente: </div>
+      <table class="lista_vinetas">
+        <tr>
+          <td class="vineta"></td>
+          <td><span class="negrilla_sensible" id="zona_sensible0">Informe de gestión </span></td>
+        </tr>
+        <tr>
+          <td class="vineta"></td>
+          <td><span class="negrilla_sensible" id="zona_sensible1">Estados financieros y sus notas </span></td>
+        </tr>
+        <tr>
+          <td class="vineta"></td>
+          <td><span class="negrilla_sensible" id="zona_sensible2">Dictamen del revisor fiscal </span></td>
+        </tr>
+        <tr>
+          <td class="vineta"></td>
+          <td><span class="negrilla_sensible" id="zona_sensible3">Información relevante </span></td>
+        </tr>
+        <tr>
+          <td class="vineta"></td>
+          <td><span class="negrilla_sensible" id="zona_sensible4">Información a la Superintendencia Financiera </span></td>
+        </tr>
+      </table>
+      <div id="zona_sensible5" class="negrilla_sensible">
+        <p><i class="fad fa-comment-exclamation"></i></p>
+        <p>Dato de interés</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="pop0" class="pop">Al cierre de cada ejercicio contable, a través de este documento, el presidente y la Junta Directiva del Banco presentan a la Asamblea de Accionistas la evolución de la Entidad junto con los documentos y demás información legalmente establecidos. </div>
+<div id="pop1" class="pop">Estos informes plasman la situación financiera del Banco a cierre de cada ejercicio.<br>
+  Estos documentos junto con sus notas <span class="negrilla">deben ser aprobados por la Asamblea de Accionistas</span>. </div>
+<div id="pop2" class="pop">En este documento el Revisor Fiscal emite un dictamen sobre los estados financieros de cierre de ejercicio. </div>
+<div id="pop3" class="pop">Mediante este mecanismo el Banco comunica a la Superintendencia Financiera, y por medio de ella a todo el mercado, cualquier hecho relevante, operación o acto extraordinario o significativo para el Banco. </div>
+<div id="pop4" class="pop">El Banco, como establecimiento de crédito y emisor de valores en el mercado público, se encuentra sometido al control y vigilancia de la Superintendencia Financiera, a la cual debe remitir la información que esta solicite, los reportes periódicos o eventuales, y la documentación legalmente establecida de manera previa y posterior a la celebración de las Asambleas de Accionistas, entre otros. </div>
+<div id="pop5" class="pop">El mecanismo principal de divulgación de todos estos documentos es la <span class="negrilla">página web del Banco</span>, cuyo acceso es público. La información relevante también puede consultarse en la <span class="negrilla">página web de la Superintendencia Financiera.</span> </div>
+<div id="pop6" class="pop"> </div>
+<div id="pop7" class="pop"> </div>
+<div id="pop8" class="pop"> </div>
+<div id="pop9" class="pop"> </div>
+<div id="pop10" class="pop"> </div>
+<div id="pop11" class="pop"> </div>
+<div id="pop12" class="pop"> </div>
+<div id="pop13" class="pop"> </div>
+<div id="pop14" class="pop"> </div>
+<div id="pop15" class="pop"> </div>
+</body>
+</html>

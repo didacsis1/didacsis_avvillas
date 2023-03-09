@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<link rel="stylesheet" href="../../index.css">
+<link rel="stylesheet" href="../../cjs/jquery.mCustomScrollbar.css" />
+<link href="../../fonts/font-awesome/css/all.css" rel="stylesheet">
+<script src="../../cjs/easeljs-0.8.2.min.js"></script> 
+<script src="../../cjs/tweenjs-0.6.2.min.js"></script> 
+<script src="../../cjs/preloadjs-0.6.2.min.js"></script> 
+<script src="../../cjs/soundjs-0.6.2.min.js"></script> 
+<script src="page.js"></script> 
+<script src="../../principal.js"></script> 
+<script src="../../cjs/jquery.min.js"></script> 
+<script src="../../cjs/jquery.imagemapster.js"></script> 
+<script src="../../cjs/jquery.mCustomScrollbar.concat.min.js"></script> 
+<script>
+var canvas, stage, exportRoot;
+
+function init() {
+
+	canvas = document.getElementById("canvas");
+
+	var loader = new createjs.LoadQueue(false);
+	loader.installPlugin(createjs.Sound);
+	loader.addEventListener("fileload", handleFileLoad);
+	loader.addEventListener("complete", handleComplete);
+	loader.addEventListener("progress", handleProgress);
+	loader.loadManifest(lib.properties.manifest);	
+}
+
+function handleFileLoad(evt) {
+	if (evt.item.type == "image") { images[evt.item.id] = evt.result; }
+}
+
+function playSound(id, loop) {
+	createjs.Sound.play(id, createjs.Sound.INTERRUPT_EARLY, 0, 0, loop);
+}
+
+ancho_linea = 0;
+alto_linea = 10;
+max_ancho = 450;
+
+function handleProgress(evt) {
+	stage = new createjs.Stage(canvas);
+	var bordePadding = 2;
+    var borde = new createjs.Shape;
+    borde.graphics.beginFill("rgba(131,120,111,0.4)").drawRect(0, 0, max_ancho + bordePadding*2, alto_linea).endFill();
+    var linea_carga = new createjs.Shape();
+	linea_carga.graphics.beginFill("#009DDF").drawRect(0 + bordePadding,0 + bordePadding, ancho_linea, alto_linea - bordePadding*2).endFill();
+	
+    progreso = Math.round(evt.loaded * max_ancho);
+	ancho_linea = progreso;
+	
+	contenedor = new createjs.Container();
+	contenedor.x = 1240/2 - max_ancho/2;
+	contenedor.y = 495*4/5 - alto_linea/2;
+	contenedor.addChild(borde, linea_carga);
+	
+	//stage.addChild(contenedor);
+	stage.update();
+}
+
+function handleComplete(evt) {
+	var queue = evt.target;
+	
+	stage = new createjs.Stage(canvas);
+	createjs.Ticker.addEventListener("tick", stage);
+
+	/////Variables
+	sin_personaje = true;
+	globo_personaje = "Texto";
+	pausas_audio = [[0,16406],[977,19347]];
+	
+	contenidos();	
+}
+
+</script>
+</head>
+
+<body onload="init();">
+<canvas id="canvas" width="1165" height="550"></canvas>
+<div id="instruccion_circulos" class="instruccion_circulos"> </div>
+<div class="c_principal c_1">
+  <h1>Código de Buen Gobierno </h1>
+  <div class="item_c">
+    <div class="instruccion_interna">Pase el mouse sobre los íconos y textos resaltados.</div>
+    <div class="resaltado_especial">Los estándares que se recogen en este código son de obligatorio cumplimiento para la Entidad, sus administradores y funcionarios. </div>
+    <div>Algunos aspectos importantes respecto a los mecanismos que permiten verificar el cumplimiento de este Código son: </div>
+    <div class="infografia"> <img src="images/diap40.png" height="120">
+      <p></p>
+      <map data-restriccion="no">
+                     
+            <area id="zona_sensible0" shape="circ" coords="113,114,95">
+            <area id="zona_sensible1" shape="circ" coords="339,114,95">
+            <area id="zona_sensible2" shape="circ" coords="565,114,95">
+      </map>
+    </div>
+    <div id="zona_sensible3" class="negrilla_sensible">
+      <p><i class="fad fa-comment-exclamation"></i></p>
+      <p>Dato de interés</p>
+    </div>
+  </div>
+</div>
+<div class="c_principal c_2_3">
+  <h1>Código de Ética, Conducta y Solución de Conflictos de Interés </h1>
+  <div class="item_c">
+    <div class="txt_c">
+      <div class="resaltado_especial">En este Código la Junta Directiva establece los principios, reglas y políticas que guían el comportamiento y la actividad de todos los integrantes del Banco AV Villas, impulsando una conducta ética. </div>
+      <div class="instruccion_interna">Pase el mouse sobre el dato de interés</div>
+      <div id="zona_sensible4" class="negrilla_sensible">
+        <p><i class="fad fa-comment-exclamation"></i></p>
+        <p>Dato de interés</p>
+      </div>
+    </div>
+  </div>
+  <div class="item_c">
+    <div>Entre las temáticas tratadas en este Código se encuentran: </div>
+    <table style="text-align: center; margin: auto;">
+      <tr>
+        <td><img src="images/diap41.png" height="250"></td>
+        <td style="width: 300px;"><div class="resaltado_especial">La Política de Prevención del Fraude y la Corrupción </div>
+          <div class="resaltado_especial">Todo lo relacionado con conflictos de interés </div></td>
+      </tr>
+    </table>
+  </div>
+</div>
+<div id="pop0" class="pop"> El representante legal del Banco velará por el cumplimiento de estos estatutos, normas y disposiciones establecidos por la Asamblea General y la Junta Directiva. </div>
+<div id="pop1" class="pop">Cuando los accionistas e inversionistas de la Entidad consideren que ha habido incumplimiento de este Código podrán hacer solicitudes respetuosas ante la Entidad y presentar quejas o reclamaciones ante el Revisor Fiscal. En cualquier caso, la Entidad deberá dar respuesta clara y oportuna a cualquier requerimiento. </div>
+<div id="pop2" class="pop">El Banco destinará una oficina para la atención de las necesidades y requerimientos que formulen los inversionistas. Esta oficina debe estar bajo la dirección de un funcionario del Banco, y servirá como enlace entre los inversionistas y los órganos de gobierno de la Entidad. </div>
+<div id="pop3" class="pop"> Este Código se encuentra en la Secretaría General del Banco y se podrá consultar en la página web. </div>
+<div id="pop4" class="pop">Es deber de todos los colaboradores del Banco realizar la lectura del Código en el momento de su vinculación a la Entidad, así como realizar las jornadas de autoformación en los casos de actualización del Código. 
+ </div>
+<div id="pop5" class="pop"> </div>
+<div id="pop6" class="pop"> </div>
+<div id="pop7" class="pop"> </div>
+<div id="pop8" class="pop"> </div>
+<div id="pop9" class="pop"> </div>
+<div id="pop10" class="pop"> </div>
+<div id="pop11" class="pop"> </div>
+<div id="pop12" class="pop"> </div>
+<div id="pop13" class="pop"> </div>
+<div id="pop14" class="pop"> </div>
+<div id="pop15" class="pop"> </div>
+</body>
+</html>

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<link rel="stylesheet" href="../../index.css">
+<link rel="stylesheet" href="../../cjs/jquery.mCustomScrollbar.css" />
+<link href="../../fonts/font-awesome/css/all.css" rel="stylesheet">
+<script src="../../cjs/easeljs-0.8.2.min.js"></script> 
+<script src="../../cjs/tweenjs-0.6.2.min.js"></script> 
+<script src="../../cjs/preloadjs-0.6.2.min.js"></script> 
+<script src="../../cjs/soundjs-0.6.2.min.js"></script> 
+<script src="page.js"></script> 
+<script src="../../principal.js"></script> 
+<script src="../../cjs/jquery.min.js"></script> 
+<script src="../../cjs/jquery.imagemapster.js"></script> 
+<script src="../../cjs/jquery.mCustomScrollbar.concat.min.js"></script> 
+<script>
+var canvas, stage, exportRoot;
+
+function init() {
+
+	canvas = document.getElementById("canvas");
+
+	var loader = new createjs.LoadQueue(false);
+	loader.installPlugin(createjs.Sound);
+	loader.addEventListener("fileload", handleFileLoad);
+	loader.addEventListener("complete", handleComplete);
+	loader.addEventListener("progress", handleProgress);
+	loader.loadManifest(lib.properties.manifest);	
+}
+
+function handleFileLoad(evt) {
+	if (evt.item.type == "image") { images[evt.item.id] = evt.result; }
+}
+
+function playSound(id, loop) {
+	createjs.Sound.play(id, createjs.Sound.INTERRUPT_EARLY, 0, 0, loop);
+}
+
+ancho_linea = 0;
+alto_linea = 10;
+max_ancho = 450;
+
+function handleProgress(evt) {
+	stage = new createjs.Stage(canvas);
+	var bordePadding = 2;
+    var borde = new createjs.Shape;
+    borde.graphics.beginFill("rgba(131,120,111,0.4)").drawRect(0, 0, max_ancho + bordePadding*2, alto_linea).endFill();
+    var linea_carga = new createjs.Shape();
+	linea_carga.graphics.beginFill("#009DDF").drawRect(0 + bordePadding,0 + bordePadding, ancho_linea, alto_linea - bordePadding*2).endFill();
+	
+    progreso = Math.round(evt.loaded * max_ancho);
+	ancho_linea = progreso;
+	
+	contenedor = new createjs.Container();
+	contenedor.x = 1240/2 - max_ancho/2;
+	contenedor.y = 495*4/5 - alto_linea/2;
+	contenedor.addChild(borde, linea_carga);
+	
+	//stage.addChild(contenedor);
+	stage.update();
+}
+
+function handleComplete(evt) {
+	var queue = evt.target;
+	
+	stage = new createjs.Stage(canvas);
+	createjs.Ticker.addEventListener("tick", stage);
+
+	/////Variables
+	sin_personaje = true;
+	globo_personaje = "Texto";
+	pausas_audio = [[0,16406],[977,19347]];
+	
+	contenidos();	
+}
+
+</script>
+</head>
+
+<body onload="init();">
+<canvas id="canvas" width="1165" height="550"></canvas>
+<div id="instruccion_circulos" class="instruccion_circulos"> </div>
+<div class="c_principal c_2_6">
+  <h1>Subtítulo</h1>
+  <div class="item_c">
+    <h1></h1>
+  </div>
+  <div class="item_c"  style="margin: 0 30px;">
+    <div class="txt_interno c_1">
+      <h1>Inicio</h1>
+      <div class="item_c">
+        <div class='instruccion_interna'><span class='indica_instclic'></span>Pulse los botones de la izquierda para conocer los diferentes órganos que tienen la responsabilidad de la toma de decisiones del Banco.</div>
+      </div>
+    </div>
+    <div class="txt_interno c_1">
+      <h1>Asamblea General de Accionistas </h1>
+      <div class="item_c">
+        <div class="txt_internob c_1">
+          <h1>Inicio</h1>
+          <div class="item_c">
+            <table style="text-align: center; margin: auto;">
+              <tr>
+                <td style="width: 400px;"> Es el <span class="negrilla">máximo órgano de gobierno del Banco</span>, y está integrada por los accionistas o sus representantes, reunidos de acuerdo con las condiciones establecidas en los estatutos y la ley. </td>
+                <td style="width: 20px;"></td>
+                <td><img src="images/diap8.png" height="200"></td>
+              </tr>
+            </table>
+            <div class="instruccion_interna">Pase el mouse sobre el dato de interés</div>
+            <div id="zona_sensible0" class="negrilla_sensible">
+              <p><i class="fad fa-comment-exclamation"></i></p>
+              <p>Dato de interés</p>
+            </div>
+            <div class='instruccion_interna'>Pulse el botón de la parte inferior.<span class='indica_instclicb'></span></div>
+          </div>
+        </div>
+        <div class="txt_internob c_1">
+          <h1>Reuniones</h1>
+          <div class="item_c">
+            <div class="instruccion_interna">Pase el mouse sobre los textos resaltados</div>
+            <div >La Asamblea tiene dos clases de reuniones: </div>
+            <table style="text-align: center; margin: auto;">
+              <tr>
+                <td><img src="images/diap9.png" height="200"></td>
+                <td><div class="negrilla_sensible" id="zona_sensible1">Ordinarias</div>
+                  <div class="negrilla_sensible" id="zona_sensible2">Extraordinarias </div></td>
+              </tr>
+            </table>
+            <div id="zona_sensible3" class="negrilla_sensible">
+              <p><i class="fad fa-comment-exclamation"></i></p>
+              <p>Dato de interés</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="txt_interno c_1">
+      <h1>Junta Directiva </h1>
+      <div class="item_c">
+        <div class="txt_internob c_1">
+          <h1>Inicio</h1>
+          <div class="item_c">
+            <div>Los aspectos más importantes respecto a la Junta Directiva son:</div>
+            <div class="infografia"> <img src="images/diap10.png" height="200">
+              <map data-restriccion="no">
+                <area id="zona_sensible4" shape="circ" coords="113,116,97">
+                <area id="zona_sensible5" shape="circ" coords="337,116,97">
+                <area id="zona_sensible6" shape="circ" coords="559,116,97">
+                <area id="zona_sensible7" shape="circ" coords="785,116,97">
+                <area id="zona_sensible8" shape="circ" coords="1010,116,97">
+                <area id="zona_sensible9" shape="circ" coords="113,352,97">
+                <area id="zona_sensible10" shape="circ" coords="337,352,97">
+                <area id="zona_sensible11" shape="circ" coords="559,352,97">
+                <area id="zona_sensible12" shape="circ" coords="785,352,97">
+                <area id="zona_sensible13" shape="circ" coords="1010,345,97">
+              </map>
+            </div>
+            <div class='instruccion_interna'>Pulse los botones de la parte inferior.<span class='indica_instclicb'></span></div>
+          </div>
+        </div>
+        <div class="txt_internob c_1">
+          <h1>Miembros</h1>
+          <div class="item_c">
+            <div class="instruccion_interna">Pase el mouse sobre los textos resaltados</div>
+            <div class="resaltado_especial">La Junta Directiva se compone de cinco miembros principales, con sus respectivos suplentes personales, elegidos por la Asamblea General de Accionistas para <span class="negrilla_sensible" id="zona_sensible14">períodos de un año</span>. </div>
+            <table style="text-align: center; margin: auto;">
+              <tr>                
+                <td style="width: 380px;"><div>Según su origen, los miembros de la Junta Directiva pueden ser independientes o no independientes. Estos últimos se clasifican en: </div>
+                  <div class="negrilla_sensible" id="zona_sensible15">Patrimoniales </div>
+                  <div class="negrilla_sensible" id="zona_sensible16">Ejecutivos </div></td>
+                  <td><img src="images/diap11.png" height="120">
+                  <div id="zona_sensible17" class="negrilla_sensible">
+                    <p><i class="fad fa-comment-exclamation"></i></p>
+                    <p>Dato de interés</p>
+                  </div></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="txt_internob c_1">
+          <h1>Reuniones</h1>
+          <div class="item_c">
+            <div class="instruccion_interna">Pase el mouse sobre los textos resaltados</div>
+            <table style="text-align: center; margin: auto;">
+              <tr>
+                <td><img src="images/diap12.png" height="200"></td>
+                <td style="width: 393px;"> La Junta Directiva se reúne <span class="negrilla_sensible" id="zona_sensible18">ordinariamente</span> y <span class="negrilla_sensible" id="zona_sensible19">extraordinariamente</span>. </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="txt_interno c_1">
+      <h1>Comité de Auditoría </h1>
+      <div class="item_c">
+        <div class="txt_internob c_1">
+          <h1>Inicio</h1>
+          <div class="item_c">
+            <table style="text-align: center; margin: auto;">
+              <tr>
+                <td style="width: 280px;"> Órgano encargado de evaluar el Sistema de Control Interno (SCI) del Banco, apoyando el diseño, la definición de políticas y el mejoramiento continuo. </td>
+                <td style="width: 20px;"></td>
+                <td><img src="images/diap13.png" height="200"></td>
+              </tr>
+            </table>
+            <div class='instruccion_interna'>Pulse los botones de la parte inferior.<span class='indica_instclicb'></span></div>
+          </div>
+        </div>
+        <div class="txt_internob c_1">
+          <h1>Miembros</h1>
+          <div class="item_c">
+            <div class="resaltado_especial">El Comité está conformado por <span class="negrilla">cuatro miembros de la Junta Directiva</span> (principales o suplentes), quienes tienen la calidad de independientes o patrimoniales. </div>
+            <div>Algunos aspectos importantes respecto a los miembros de este Comité son:</div>
+            <div class="infografia"> <img src="images/diap14.png" height="100">
+              <map data-restriccion="no">
+                <area id="zona_sensible20" shape="circ" coords="113,114,95">
+                <area id="zona_sensible21" shape="circ" coords="339,114,95">
+                <area id="zona_sensible22" shape="circ" coords="565,114,95">
+              </map>
+            </div>
+          </div>
+        </div>
+        <div class="txt_internob c_1">
+          <h1>Reuniones</h1>
+          <div class="item_c">
+            <table style="text-align: center; margin: auto;">
+              <tr>
+                <td style="width: 400px;"> El Comité deberá sesionar <span class="negrilla">mínimo cuatro veces al año</span>. Sin embargo, podrá reunirse en cualquier momento, de manera extraordinaria, si el presidente del Comité, cualquiera de sus miembros o el presidente de AV Villas lo considera necesario. </td>
+                <td><img src="images/diap15.png" height="200"></td>
+              </tr>
+            </table>
+            <div class="instruccion_interna">Pase el mouse sobre el dato de interés</div>
+            <div id="zona_sensible23" class="negrilla_sensible">
+              <p><i class="fad fa-comment-exclamation"></i></p>
+              <p>Dato de interés</p>
+            </div>
+          </div>
+        </div>
+        <div class="txt_internob c_1">
+          <h1>Funciones</h1>
+          <div class="item_c">
+            <table style="text-align: center; margin: auto;">
+              <tr>
+                <td><img src="images/diap16.png" height="150">
+                  <div class="instruccion_interna">Pase el mouse sobre el dato de interés</div>
+                  <div id="zona_sensible24" class="negrilla_sensible">
+                    <p><i class="fad fa-comment-exclamation"></i></p>
+                    <p>Dato de interés</p>
+                  </div></td>
+                <td  style="width: 20px;"></td>
+                <td  style="width: 310px;"><div class="resaltado_especial">Las funciones del Comité de Auditoría están previstas en su Reglamento. </div>
+                  <div class="instruccion_interna">Descargue el archivo para conocer las primordiales</div>
+                  <a href="documents/Funciones_Comiteauditoria.pdf" class="descarga" download>Funciones principales del Comité de Auditoría </a></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="txt_interno c_1">
+      <h1>Presidente</h1>
+      <div class="item_c">
+        <div class="instruccion_interna">Pase el mouse sobre los textos resaltados</div>
+        <table style="text-align: center; margin: auto;">
+          <tr>
+            <td  style="width: 440px;"> El presidente es el representante legal de la Entidad, es <span class="negrilla_sensible" id="zona_sensible25">designado por la Junta Directiva</span>, podrá ser removido libremente y tendrá los suplentes que señalen los estatutos o la Junta Directiva. </td>
+            <td><img src="images/diap17.png" height="200"></td>
+          </tr>
+        </table>
+        <div class="resaltado_especial">Sus funciones están consagradas en los estatutos y la ley. </div>
+        <div id="zona_sensible26" class="negrilla_sensible">
+          <p><i class="fad fa-comment-exclamation"></i></p>
+          <p>Dato de interés</p>
+        </div>
+      </div>
+    </div>
+    <div class="txt_interno c_1_1">
+      <h1>Alta Dirección</h1>
+      <div class="item_c">
+        <div class="txt_c">
+          <div>Los vicepresidentes y principales ejecutivos están a cargo de las actividades comerciales y se encargan de concebir, ejecutar y hacer seguimiento a los objetivos y estrategias del Banco, apoyando la gestión del Presidente. </div>
+        </div>
+      </div>
+      <div class="item_c"><img src="images/diap18.png" height="250">
+        <div class="instruccion_interna">Pase el mouse sobre el dato de interés</div>
+        <div id="zona_sensible27" class="negrilla_sensible">
+          <p><i class="fad fa-comment-exclamation"></i></p>
+          <p>Dato de interés</p>
+        </div>
+      </div>
+    </div>
+    <div class="txt_interno c_1">
+      <h1>Secretaría General</h1>
+      <div class="item_c">
+        <div class="instruccion_interna">Pase el mouse sobre los íconos y textos resaltados.</div>
+        <div class="resaltado_especial">AV Villas tiene un solo secretario para la Asamblea General, la Junta Directiva y la Presidencia.</div>
+        <div>Dentro de sus funciones están:</div>
+        <div class="infografia"> <img src="images/diap19.png" height="200">
+          <p></p>
+          <map data-restriccion="no">
+            <area id="zona_sensible28" shape="circ" coords="83,104,61">
+            <area id="zona_sensible29" shape="circ" coords="83,360,61">
+            <area id="zona_sensible30" shape="circ" coords="833,104,61">
+            <area id="zona_sensible31" shape="circ" coords="833,360,61">
+          </map>
+        </div>
+        <div id="zona_sensible32" class="negrilla_sensible">
+          <p><i class="fad fa-comment-exclamation"></i></p>
+          <p>Dato de interés</p>
+        </div>
+      </div>
+    </div>
+    <div class="txt_interno c_1-1_1">
+      <h1>Comités de la Administración</h1>
+      <div class="item_c">
+        <div class="txt_c">
+          <div>Para lograr una adecuada gestión de riesgos y de otros aspectos administrativos y de diversa índole, la administración puede crear distintos comités, por ejemplo:</div>
+        </div>
+      </div>
+      <div class="item_c"><img src="images/diap20.png" height="200"></div>
+      <div class="item_c">
+        <div class="txt_c">
+          <table class="lista_vinetas">
+            <tr>
+              <td class="vineta"></td>
+              <td> Comité de Gobierno Corporativo </td>
+            </tr>
+            <tr>
+              <td class="vineta"></td>
+              <td> Comité de Continuidad de Negocio </td>
+            </tr>
+            <tr>
+              <td class="vineta"></td>
+              <td> Comité de Riesgo de Crédito y Mercado, o Riesgo Operativo </td>
+            </tr>
+            <tr>
+              <td class="vineta"></td>
+              <td> Comité de Cumplimiento Regulatorio </td>
+            </tr>
+            <tr>
+              <td class="vineta"></td>
+              <td> Comité de Seguridad y Ciberseguridad </td>
+            </tr>
+            <tr>
+              <td class="vineta"></td>
+              <td> Comité de Ética y Conflictos de Interés </td>
+            </tr>
+            <tr>
+              <td class="vineta"></td>
+              <td> Comité SARLAFT </td>
+            </tr>
+            <tr>
+              <td class="vineta"></td>
+              <td> Comité IPT (Comité de Inversiones, Precios y Tarifas) </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="pop0" class="pop"> El Banco cuenta con un Reglamento de la Asamblea de Accionistas, el cual incluye diferentes aspectos de su funcionamiento. De igual manera, sus funciones se encuentran contempladas en los estatutos del Banco. </div>
+<div id="pop1" class="pop"> Una vez al año dentro de los meses de enero a marzo. Si después de estos meses no ha sido convocada, se reúne el primer día hábil del mes de abril a las 10 de la mañana en las oficinas de la Presidencia. </div>
+<div id="pop2" class="pop">Siempre que sean convocadas por la Junta Directiva, el Presidente o el Revisor Fiscal. </div>
+<div id="pop3" class="pop">Excepto en los casos de representación legal, los administradores y empleados de la Entidad no podrán representar en las reuniones de la Asamblea acciones distintas de las propias, mientras estén en ejercicio de sus cargos, ni sustituir los poderes que se les confieran. Tampoco podrán votar los balances o las cuentas de fin de ejercicio o de liquidación. </div>
+<div id="pop4" class="pop"> Para la conformación de la Junta Directiva se observan las políticas y procedimientos que establezca la Sociedad. </div>
+<div id="pop5" class="pop">Los directores suplentes reemplazan a los directores principales en sus faltas absolutas o temporales, de acuerdo con los términos señalados en los estatutos. </div>
+<div id="pop6" class="pop"> La Junta Directiva tiene un presidente y un vicepresidente, elegidos por  los directores, y un secretario, elegido de acuerdo con lo que determinan los estatutos. </div>
+<div id="pop7" class="pop">Las deliberaciones y decisiones de cada reunión deben quedar consignadas en un acta, que debe cumplir con todos los requisitos de la ley y los reglamentos. </div>
+<div id="pop8" class="pop">El Presidente del Banco asiste a las reuniones de la Junta y tiene voz, pero no voto. También puede asistir cualquier otro funcionario de la Institución que haya sido invitado por la Junta o el presidente . </div>
+<div id="pop9" class="pop"> Las funciones de la Junta Directiva son las que le correspondan de acuerdo con la legislación vigente, el reglamento de la Junta Directiva y los estatutos. </div>
+<div id="pop10" class="pop">La Junta Directiva actuará siempre de forma independiente frente a la Administración y siguiendo las instrucciones de la Asamblea General de Accionistas. </div>
+<div id="pop11" class="pop">Algunos deberes a cargo de los miembros de la Junta Directiva son: el de diligencia o cuidado, el de lealtad, el de no competencia, el de secreto y el de no uso de los activos sociales. </div>
+<div id="pop12" class="pop">Algunos derechos de los miembros de la Junta son: el de información, el derecho a contar con el auxilio de expertos, el de remuneración y el de inducción y entrenamiento permanente. </div>
+<div id="pop13" class="pop"> Todos los miembros tendrán una remuneración de acuerdo con los parámetros de mercado para este tipo de sociedades y las condiciones y calidades de los miembros (Política de Nombramiento y Remuneración de la Junta Directiva). </div>
+<div id="pop14" class="pop"> Pueden ser reelegidos en forma indefinida. <br>
+  Los directores de la Junta deben permanecer en su puesto hasta que sus sucesores sean elegidos y declarados hábiles, salvo que antes de esto hayan sido removidos o inhabilitados. </div>
+<div id="pop15" class="pop"> Accionistas de la Sociedad o que hayan sido expresamente postulados por un accionista para integrar la Junta Directiva. </div>
+<div id="pop16" class="pop">Ostentan la calidad de representantes legales de la Sociedad o hacen parte de la alta gerencia. El número de estos debe ser el mínimo necesario para atender las necesidades de información y coordinación entre la Junta Directiva y la alta gerencia de la Sociedad, sin que en ningún caso pueda ser mayor al de la sumatoria de los miembros independientes y patrimoniales que la conformen. </div>
+<div id="pop17" class="pop">Los miembros patrimoniales e independientes quedan excluidos de sistemas retributivos vinculados con las acciones. </div>
+<div id="pop18" class="pop"> Por lo menos una vez al mes, mediante convocatoria efectuada por el presidente de la Junta. </div>
+<div id="pop19" class="pop">Cuando es convocada por su presidente, el presidente del Banco, el Revisor Fiscal o dos miembros que actúen como principales. </div>
+<div id="pop20" class="pop">Permanecerán en sus funciones por un periodo mínimo de un año, de manera que coincida con el período estatutario de los miembros de la Junta Directiva. </div>
+<div id="pop21" class="pop">Podrán ser reelegidos sucesivamente. </div>
+<div id="pop22" class="pop"> Para el correcto y oportuno desarrollo de sus funciones, pueden obtener el apoyo, puntual o de forma permanente, de miembros de la Alta Gerencia, otros funcionarios del Banco y/o expertos externos. </div>
+<div id="pop23" class="pop">A estas reuniones asisten el presidente del Banco y el Contralor General. También pueden asistir el vicepresidente financiero, el vicepresidente jurídico, el Revisor Fiscal y cualquier otro funcionario que el Comité considere conveniente o necesario. </div>
+<div id="pop24" class="pop">La Junta Directiva presentará a la Asamblea General de Accionistas al cierre de cada ejercicio económico un informe sobre las labores desarrolladas por el Comité en dicho período. Igualmente, a solicitud del presidente de la Asamblea, el presidente del Comité de Auditoría informará a la Asamblea General de Accionistas sobre aspectos concretos del trabajo realizado por el Comité. </div>
+<div id="pop25" class="pop"> Para la elección de los representantes legales y el presidente, la Junta Directiva utilizará como criterios de escogencia la habilidad gerencial y de negociación del candidato, sus conocimientos técnicos y valores y virtudes humanas. Previamente a su posesión, se deberá enviar su hoja de vida a la Superintendencia Financiera para que esta efectúe el escrutinio previo sobre la idoneidad profesional y solvencia moral del designado. </div>
+<div id="pop26" class="pop"> Las políticas de remuneración del presidente y los demás miembros de la Alta Gerencia son impartidas desde Grupo Aval Acciones y Valores S.A., teniendo en cuenta el cumplimiento de objetivos de largo plazo y los niveles de riesgo. Como práctica de buen gobierno corporativo, el presidente informará a la Junta Directiva el incremento salarial de la Alta Gerencia y los demás empleados del Banco. </div>
+<div id="pop27" class="pop">La Junta Directiva podrá, si a su juicio se requiere para la buena marcha de la Institución, conferir la representación legal del Banco a los vicepresidentes que determine en cada caso. </div>
+<div id="pop28" class="pop">Realizar la convocatoria a las reuniones de la Junta Directiva, de acuerdo con el plan anual. </div>
+<div id="pop29" class="pop"> Remitir a los miembros de la Junta Directiva el material asociado a la reunión dentro de los cinco días calendario anteriores a esta. </div>
+<div id="pop30" class="pop">Conservar la documentación social, reflejar debidamente en los libros de actas el desarrollo de las sesiones y dar fe de los acuerdos de los órganos sociales. </div>
+<div id="pop31" class="pop">Velar por la legalidad formal de las actuaciones de la Junta Directiva y garantizar que sus procedimientos y reglas de gobierno sean respetados y regularmente revisados. </div>
+<div id="pop32" class="pop"> El secretario será de libre nombramiento y remoción a propuesta del Presidente del Banco. </div>
+<div id="pop33" class="pop"> </div>
+<div id="pop34" class="pop"> </div>
+<div id="pop35" class="pop"> </div>
+<div id="pop36" class="pop"> </div>
+<div id="pop37" class="pop"> </div>
+<div id="pop3" class="pop"> </div>
+<div id="pop3" class="pop"> </div>
+<div id="pop2" class="pop"> </div>
+<div id="pop2" class="pop"> </div>
+</body>
+</html>
